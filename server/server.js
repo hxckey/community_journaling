@@ -1,7 +1,26 @@
 const express = require('express');
-const app = express();
 const cors = require('cors');
 const port = 5000;
+
+const app = express();
+app.use(express.json());
+
+const articles = [
+    {
+        id: 1,
+        entry: "slufgkejfdpihq", 
+        comments: ['comment one', 'comment two', 'comment three'], 
+        gifs: ["gif1", "gif2"],
+        emojis: {like: 1, heart: 2, fire: 3}
+    }, 
+    {
+        id: 2,
+        entry: "hello world", 
+        comments: ['comment one', 'comment two', 'comment three'], 
+        gifs: ["gif1", "gif2"],
+        emojis: {like: 1, heart: 2, fire: 3}
+    }
+]
 
 app.use(cors());
 app.listen(port, () =>{
@@ -19,23 +38,21 @@ app.get("/articles/:id", (req, res) => {
     res.send(articles[req.params.id-1])
   }})
 
-app.post("/articles/new/:entry", (req, res) => {
-    articles.push(req.params.entry)
+app.post("/entry", (req, res) => {
+    try {
+        let newEntry =  { id: articles.length+1, entry: req.body.entry,
+        comments: req.body.comments, 
+        gifs: req.body.gifs,
+        emojis: req.body.emojis };
+        articles.push(newEntry);
+        res.status(201).json({
+            message: "Article added"
+        });
+    } catch(err) {
+        res.status(500).json({
+            message: "Error: Article not added"
+        });
+    }
 });
 
 module.exports = app
-
-const articles = [
-    {article: 
-        {text: "slufgkejfdpihq", 
-        comments: ['comment one', 'comment two', 'comment three'], 
-        gifs: ["gif1", "gif2"],
-        emojis: {like: 1, heart: 2, fire: 3}
-    }}, 
-    {article: 
-        {text: "hello world", 
-        comments: ['comment one', 'comment two', 'comment three'], 
-        gifs: ["gif1", "gif2"],
-        emojis: {like: 1, heart: 2, fire: 3}
-    }},
-]

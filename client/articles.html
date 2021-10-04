@@ -7,14 +7,18 @@
     <title>StreetHub</title>    
     <script defer src="articles.js"></script>
     <link rel="stylesheet" href="article.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cirrus-ui@0.6.0/dist/cirrus.min.css">
+    <link rel="icon" href="assets/logo/logo_small_icon_only_inverted.png">
+    <link rel="stylesheet" href="./style.css" type="text/css">
+    <script defer src="script.js"></script>
 </head>
 
 <body>
     <header>
-        <nav id="header-navbar">
-            <h1>StreetHub</h1>
-            <input type="button" value = "Get started!" onclick="location.href='articles.html'">
-        </nav> 
+        <nav>
+            <img id="navLogo" src="./assets/logo/logo_small.png">
+            <button id="getStartedButton">Get Started</button>
+        </nav>
     </header> 
 
     <h2 id="title">Articles</h2>
@@ -149,15 +153,32 @@
             </div>
         </div>   
     </main> 
-
-    <footer>
-        <nav id="footer-navbar">
-            <h3><a href="index.html">Homepage</a></h3>
-            <h3><a href="articles.html">Articles</a></h3>
-            <h3><a href="conduct.html">Code of Conduct</a></h3>
-        </nav>
+    <footer class="footer bg-gray-000 font-alt text-purple-300" id="CoCFooter">
+        <h6 class="footer_title">2021 StreetHub - RCGroup</h6>
+            <div class="content">
+                <div class="divider"></div>
+        
+                <div>
+                   
+                    <div class="col-4">
+                        <ul class="no-bullets">
+                            <a href="index.html">
+                                <li class="footer__list-item">About</li>
+                            </a>
+                            <a href="conduct.html">
+                                <li class="footer__list-item">Code of Conduct</li>
+                            </a>
+                            <a href="articles.html">
+                                <li class="footer__list-item">Articles</li>
+                            </a>
+                            <ul>
+                            </ul>
+                        </ul>
+                    </div>
+                   
+                </div>
+            </div>
     </footer>
-
 </body>
 </html>
 

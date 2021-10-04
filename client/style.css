@@ -1,3 +1,142 @@
+
+:root {
+    --pink-purple: #A74165;
+    --dark-pink-purple: #612137;
+    --purple: #61329c;
+    --lilac: #F7DBF0;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: 'Quicksand', sans-serif;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--lilac);
+}
+    
+nav {
+    display: block;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100px;
+    box-shadow: 2px 2px 5px grey;
+    background-color: #fff;
+}
+
+#navTitle {
+    position: absolute;
+    left: 40px;
+    top: 4px;
+    color: var(--pink-purple);
+    font-size: 2em;
+}
+
+#navSpan {
+    color: var(--purple);
+}
+
+#getStartedButton {
+    position: absolute;
+    right: 30px;
+    top: 30px;
+    width: 150px;
+    height: 40px;
+    background-color: var(--pink-purple);
+    border: 2px solid var(--pink-purple);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1.1em;
+}
+
+#getStartedButton:hover, #conductButton:hover {
+    background-color: #fff;
+    color: var(--pink-purple);
+}
+
+#getStartedButton:active, #conductButton:active {
+    background-color: var(--dark-pink-purple);
+    color: #fff;
+}
+
+#welcomeHeader {
+    margin-top: 100px;
+    background-color: #fff;
+    padding: 20px;
+}
+
+#indexWelcome {
+    font-size: 3em;
+    margin-left: 50px;
+}
+
+#indexWelcome > span{
+    color: var(--pink-purple);
+}
+
+#stayPostedHeader {
+    margin-left: 20px;
+}
+
+#examplePosts {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    margin: 10px;
+}
+
+#examplePosts > section {
+    padding: 10px;
+    padding-left: 20px;
+    background-color: #fff;
+    margin: 10px;
+    border-radius: 10px;
+}
+
+#examplePosts > section > h5 {
+    color: var(--dark-pink-purple);
+}
+
+#infoContainer {
+    margin-top: 50px;
+    padding-left: 50px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#infoContainer > section {
+    width: 70%;
+    line-height: 1.5em;
+}
+
+#infoContainer > section > h3{
+    border-bottom: 3px solid var(--pink-purple);
+}
+
+#conductButton {
+    width: 200px;
+    height: 40px;
+    background-color: var(--pink-purple);
+    border: 2px solid var(--pink-purple);
+    border-radius: 5px;
+    color: #fff;
+    font-size: 1.1em;
+}
+
+#footer-navbar {
+    margin: 20px 0 0 0;
+    display: flex;
+    justify-content: space-around;
+    background-color: #fff;
+    box-shadow: 2px 2px 5px gray;
+}
+
+#footer-navbar > h3 > a{
+    color: var(--purple);
+    text-decoration: none;
+  
 li {
     list-style-type: none;
     text-decoration: none;

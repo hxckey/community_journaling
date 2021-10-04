@@ -1,3 +1,4 @@
+
 :root {
     --pink-purple: #A74165;
     --dark-pink-purple: #612137;
@@ -135,4 +136,12 @@ nav {
 #footer-navbar > h3 > a{
     color: var(--purple);
     text-decoration: none;
+  
+li {
+    list-style-type: none;
+    text-decoration: none;
+}
+
+#CoCFooter {
+    height: 400px;
 }

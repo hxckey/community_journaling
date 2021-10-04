@@ -19,6 +19,23 @@ app.get("/articles/:id", (req, res) => {
     res.send(articles[req.params.id-1])
   }})
 
+app.post("/articles/new/:entry", (req, res) => {
+    articles.push(req.params.entry)
+});
+
 module.exports = app
 
-const articles = ['hello', 'world']
+const articles = [
+    {article: 
+        {text: "slufgkejfdpihq", 
+        comments: ['comment one', 'comment two', 'comment three'], 
+        gifs: ["gif1", "gif2"],
+        emojis: {like: 1, heart: 2, fire: 3}
+    }}, 
+    {article: 
+        {text: "hello world", 
+        comments: ['comment one', 'comment two', 'comment three'], 
+        gifs: ["gif1", "gif2"],
+        emojis: {like: 1, heart: 2, fire: 3}
+    }},
+]

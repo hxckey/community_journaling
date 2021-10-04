@@ -12,14 +12,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
 </head>
 <body>
-<nav>
-    <h1 id="navTitle">Street<span id="navSpan">Hub</span></h1>
-    <button id="getStartedButton">Get Started</button>
-</nav>
-<h2 id="indexWelcome">Welcome to <span>Streethub</span></h2>
-<article>
+    <nav>
+        <h1 id="navTitle">Street<span id="navSpan">Hub</span></h1>
+        <button id="getStartedButton">Get Started</button>
+    </nav>
+    <section id="welcomeHeader">
+        <h2 id="indexWelcome">Welcome to <span>Streethub</span>.</h2>
+    </section>
+    <main>
+        <article id="infoContainer">
             <section>
-                <h3>About</h3>
+                <h3>About StreetHub</h3>
                 <p><span>StreetHub</span> is a brand new, easy to use journaling website for your community. Read and comment on what's happening in your area, or submit your own entries.</p>
             </section>
             <section>
@@ -36,13 +39,50 @@
                 <button id="conductButton">Code of Conduct</button>
             </section>
         </article>
-    <footer>
-        <ul>
-            <li><a href="index.html">Back to Top</a></li>
-            <li><a href="articles.html">Articles</a></li>
-            <li><a href="conduct.html">Code of Conduct</a></li>
-        </ul>
-        <p>2021 RCGroup</p>
+        <h2 id="stayPostedHeader"> Stay up to date with what's happening in your community...</h2>
+        <article id="examplePosts">
+            <section>
+                <h3>Charity Fair 17th October</h3>
+                <p class="exampleCardContent">Hello everyone! On Sunday the 17th October there will be a charity fair on the common. Looking forward to seing you all there!</p>
+                <h5>Comments</h5>
+                <ul>
+                    <li>Great idea, looking forward to it.</li>
+                    <li>See you there!</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Community Food Bank</h3>
+                <p class="exampleCardContent">Please donate any leftover tinned items to the community food bank at the community centre.</p>
+                <h5>Comments</h5>
+                <ul>
+                    <li>Will do, thanks for the notice.</li>
+                    <li>Lots of items to give.</li>
+                </ul>
+            </section>
+            <section>
+                <h3>New Skateboard Park</h3>
+                <p class="exampleCardContent">A new skateboard park will be opening at the community park at the end of this month. For ages 13+</p>
+                <h5>Comments</h5>
+                <ul>
+                    <li>Great! Now I won't have to travel so far to use my skateboard</li>
+                    <li>Good to see something for the teens to do.</li>
+                </ul>
+            </section>
+            <section>
+                <h3>Hollywood Actor Visits Town</h3>
+                <p class="exampleCardContent">Last weekend, a well known hollywood star visited the town. Read more here...</p>
+                <h5>Comments</h5>
+                <ul>
+                    <li>Had no idea, thanks for posting this.</li>
+                    <li>Managed to get an autograph!</li>
+                </ul>
+            </section>
+        </article>
+    </main>
+    <footer id="footer-navbar">
+        <h3><a href="index.html">Homepage</a></h3>
+        <h3><a href="articles.html">Articles</a></h3>
+        <h3><a href="conduct.html">Code of Conduct</a></h3>
     </footer>
 </body>
 </html>

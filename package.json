@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll",
-    "coverage" : "jest coverage",
-    "start" : "node index.js"
+    "coverage": "jest coverage",
+    "start": "node server/server.js"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,32 @@
+/// Navbar JS
+window.onscroll = () => windowScroll();
+
+const windowScroll = () => {
+    let nav = document.querySelector('nav')
+    let navLogo = document.getElementById('navLogo');
+    let navPostButton = document.getElementById('newPostButton');
+
+    if (document.documentElement.scrollTop > 80) {
+        navLogo.src = 'assets/logo/logo_small_icon_only_inverted.png';
+        navLogo.style.height = '50px';
+        nav.style.height = '75px';
+        navLogo.style.top = '12px';
+        navLogo.style.left = '70px';
+        navPostButton.style.top = '15px';
+        nav.style.transition = 'height 0.2s'
+
+    } else {
+        navLogo.src = 'assets/logo/logo_small.png';
+        navLogo.style.height = '80px';
+        nav.style.height = '100px';
+        navLogo.style.top = '10px';
+        navLogo.style.left = '40px';
+        navPostButton.style.top = '30px';
+        nav.style.transition = 'height 0.2s'
+    }
+}
+
+//// Functionality for the article modals 
 // Store the required arrays
 const modals = document.getElementsByClassName('ourModal');
 const readBtn = document.querySelectorAll('button.readBtn');
@@ -40,40 +69,39 @@ window.onclick = function(event) {
     }
 }
 
+// Functionality for New Post button
+const postBtn = document.getElementById('newPostButton')
+const newPost = document.getElementById('newPost');
+const closePost = document.getElementById('closepostBtn')
+
+// Functions
+function openPostModal() {
+    newPost.style.display = 'block';
+}
+
+function closePostModal() {
+    newPost.style.display = 'none';
+}
+
+function outsidePostClick(e) {
+    if(e.target == newPost){
+        newPost.style.display = 'none';
+    }
+}
+
+// Listens for clicks
+postBtn.addEventListener('click', openPostModal);
+closePostBtn.addEventListener('click', closePostModal);
+window.addEventListener('click', outsidePostClick);
 
 
 
 
 
 
-
-// //Functions to open and close modal
-// function openModal() {
-//     modal.style.display = 'block';
-// }
-
-// function closeModal() {
-//     modal.style.display = 'none';
-// }
-
-// //Function to close modal if outside click
-// function outsideClick(e) {
-//     if(e.target == item){
-//         modal.style.display = 'none';
-//     }
-// }
-
-// // Listen for open click
-// readModalBtn.addEventListener('click', openModal);
-
-// // Listen for close click
-// closeBtn.addEventListener('click', closeModal);
-
-// //Listen for outside click
-// window.addEventListener('click', outsideClick);
 
 ////////////////////////////////////////
-// Original code saved for referance / in case of drastic failure :O
+// Original code for modal event listeners saved for referance / in case of drastic failure :O
 
 // // Get required elements
 // const modal = document.getElementsByClassName("ourModal")[0];

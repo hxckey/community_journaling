@@ -4,20 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreetHub</title>    
+    <title>StreetHub - Articles</title>    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cirrus-ui@0.6.0/dist/cirrus.min.css">
     <link rel="icon" href="assets/updated logo/logo_small_icon_only_inverted.png">
     <link rel="stylesheet" href="./style.css" type="text/css">
     <link rel="stylesheet" href="article.css">
-    <script defer src="script.js"></script>
     <script defer src="articles.js"></script>
 </head>
 
 <body class="bg-purple-200 mt-16">
     <header>
-        <nav>
+        <nav>        
             <img id="navLogo" src="./assets/updated logo/logo_small.png">
-            <button id="getStartedButton">Get Started</button>
+            <button id="newPostButton" href='#newPost'>New post</button>
+            <div class = "postModal" id="newPost">
+                <div class = "modalContent">
+                    <header class="modalHeader">
+                        <span id = "closePostBtn">&times;</span>
+                        <h4>Write your post below</h4>
+                    </header>      
+                    <body class="modalBody">
+                        <textarea name="postInputBox" id="postInputBox" rows="15" autofocus required maxlength="2000" placeholder="Enter text here, 2000 character limit"></textarea>
+                        <form action="postInputBox" id='postFooter'>
+                            <button disabled id='gifBtn' class='btn'>Add a Gif</button>
+                            <input id='postBtn' type="submit" value="Post your article!" formmethod="POST">
+                        </form>                        
+                    </body>           
+                </div>
         </nav>
     </header> 
 

@@ -177,3 +177,31 @@
     cursor: pointer;
 }
 
+
+.modalBody{
+    width: 70%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#gifResults {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    list-style: none;
+    padding: 0;
+}
+
+#gifSearchQuery {
+    width: 30%;
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+#searchGif {
+    border-bottom-left-radius: 0px;
+    border-top-left-radius: 0px;
+}
+
+#formBtnContainer > button > img {
+    margin-left: 10px;
+}

@@ -124,21 +124,6 @@ const getArticles = () => {
         articles.push(data)
         console.log(articles);
     });
-    // articles.push(data)
-    // console.log(ressies)
-    // try {
-    //     let response = await fetch('http://localhost:5000/articles')
-    //     let articleResponse = await response.json();
-    //     for (result in articleResponse.output){
-    //         //console.log(jsonResponse.output.data[result].url);
-    //         articles.push(articleResponse.output);
-    //     } 
-    //     console.log(jsonResponse.output)
-    //     console.log(articles)
-    //     return articles;
-    // } catch(error) {
-    //     console.error('There was an error handling your request' + error.messagex)
-    // }
 };
 
 let inputBox = document.getElementById('postInputBox');

@@ -45,7 +45,7 @@ app.get("/gifs/:query", async (req, res) => {
         const searchGif = req.params.query;
         const apiKey = process.env.API_KEY;
 
-        const response = await axios.get(`https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchGif}&limit=25&offset=0&rating=g&lang=en`);
+        const response = await axios.get(`https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchGif}&limit=10&offset=0&rating=g&lang=en`);
 	
 		return res.json({
             success: true,

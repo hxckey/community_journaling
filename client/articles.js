@@ -81,66 +81,6 @@ function openPostModal() {
     newPost.style.display = 'block';
 }
 
-const getGiphy = async(query) => {
-    let gifs = [];
-    try {
-        let response =  await fetch(`http://localhost:5000/gifs/${query}`)
-        let jsonResponse = await response.json();
-
-        for(result in jsonResponse.output.data){
-            //console.log(jsonResponse.output.data[result].url);
-            gifs.push(jsonResponse.output.data[result].images.downsized.url);
-        } 
-
-        return gifs;
-    } catch(error) {
-        console.error("There was an error handling your request: " + error.message);
-    } 
-};
-
-
-let searchGif = document.getElementById('searchGif');
-let gifQuery = document.getElementById('gifSearchQuery');
-let gifResults = document.getElementById('gifResults');
-searchGif.addEventListener('click', e => {
-    e.preventDefault();
-    while(gifResults.firstChild){
-        gifResults.firstChild.remove();
-    }
-    getGiphy(gifQuery.value).then(resultList => {
-        for(item of resultList){
-            let newGif = document.createElement('div');
-            newGif.innerHTML = `<iframe src="${item}">`;
-            gifResults.appendChild(newGif);
-        }
-    }) 
-});
-
-let exampleComments = [
-    {comment:'Very good', gif: 'https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif'}, 
-    {comment:'Great post', gif: ''}, 
-    {comment:'I agree', gif: 'https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif'},
-    {comment:`This is the best thing I've ever read`, gif: ''},
-    {comment:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', gif: ''}
-];
-let viewComments = document.getElementById('viewComments');
-let commentsList = document.getElementById('commentsList');
-viewComments.addEventListener('click', e => {
-    for(comment in exampleComments){
-        let commentTitle = document.createElement('dt');
-        let commentDesc = document.createElement('dd');
-        commentTitle.textContent = 'Anonymous';
-        commentDesc.textContent = exampleComments[comment].comment;
-        if(exampleComments[comment].gif){
-            let commentGif = document.createElement('iframe');
-            commentGif.src = exampleComments[comment].gif;
-            commentsList.insertAdjacentElement('afterbegin', commentGif);
-        }
-        commentsList.insertAdjacentElement('afterbegin', commentDesc);
-        commentsList.insertAdjacentElement('afterbegin', commentTitle);
-    }
-});
-
 function closePostModal() {
     newPost.style.display = 'none';
 }
@@ -159,11 +99,79 @@ window.addEventListener('click', outsidePostClick);
 
 
 //// Emoji counter
-const like = document.getElementById('likeEmoji');
-const heart = document.getElementById('heartEmoji');
-const fire = document.getElementById('fireEmoji');
+//Selectors
+const likeBtn = document.getElementById('likeEmoji');
+const heartBtn = document.getElementById('heartEmoji');
+const fireBtn = document.getElementById('fireEmoji');
+
+//Event listener to change button style when clicked and alter the coutner
+
+// Sets the coutners intialy to zero and adds them to the html
+let likeCount = 7;
+let heartCount = 3;
+let fireCount = 5;
+
+const likeCounter = document.getElementById('likeCounter');
+const heartCounter = document.getElementById('heartCounter');
+const fireCounter = document.getElementById('fireCounter');
+
+window.addEventListener('load', () => {
+    likeCounter.textContent = likeCount;
+    heartCounter.textContent = heartCount;
+    fireCounter.textContent = fireCount;
+})
 
 
+// Like button
+likeBtn.addEventListener('click', () => {
+    if(likeBtn.style.backgroundColor === 'white') {
+        likeBtn.style.backgroundColor = 'rgb(41,114,250)';
+        likeBtn.style.border = 'black';
+        likeBtn.style.fontWeight = 'bolder';
+        likeCount ++;
+        likeCounter.textContent = likeCount;
+    } else {
+        likeBtn.style.backgroundColor = 'white';
+        likeBtn.style.border = 'white';
+        likeBtn.style.fontWeight = 'normal';
+        likeCount --;
+        likeCounter.textContent = likeCount
+    }
+});
+
+// Love button
+heartBtn.addEventListener('click', () => {
+    if(heartBtn.style.backgroundColor === 'white') {
+        heartBtn.style.backgroundColor = 'rgb(211,105,116)';
+        heartBtn.style.border = 'black';
+        heartBtn.style.fontWeight = 'bolder';
+        heartCount++;
+        heartCounter.textContent = heartCount;
+    } else {
+        heartBtn.style.backgroundColor = 'white';
+        heartBtn.style.border = 'white';
+        heartBtn.style.fontWeight = 'normal'
+        heartCount--;
+        heartCounter.textContent = heartCount
+    }
+});
+
+// Fire button
+fireBtn.addEventListener('click', () => {
+    if(fireBtn.style.backgroundColor === 'white') {
+        fireBtn.style.backgroundColor = 'rgb(250,182,51)';
+        fireBtn.style.border = 'black';
+        fireBtn.style.fontWeight = 'bolder';
+        fireCount++;
+        fireCounter.textContent = fireCount;
+    } else {
+         fireBtn.style.backgroundColor = 'white';
+         fireBtn.style.border = 'white';
+         fireBtn.style.fontWeight = 'normal'
+         fireCount--;
+         fireCounter.textContent = fireCount
+    }
+});
 
 
 

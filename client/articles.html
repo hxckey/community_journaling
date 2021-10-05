@@ -24,10 +24,10 @@
                         <span id = "closePostBtn">&times;</span>
                         <h4>Write your post below</h4>
                     </header>      
-                    <body class="modalBody">
+                    <body class="modalBody">                            
                         <form method="POST" action="https://localhost:5000/entry" id='postFooter'>
                             <textarea name="postInputBox" id="postInputBox" rows="15" autofocus required maxlength="2000" placeholder="Enter text here, 2000 character limit"></textarea>
-                            <button disabled id='gifBtn' class='btn'>Add a Gif</button>
+                            <button disabled id='gifBtn' class='ourBtn'>Add a Gif</button>
                             <input id='postBtn' type="submit" value="Post your article!" formmethod="POST">
                         </form>                        
                     </body>           
@@ -36,16 +36,23 @@
     </header> 
 
     <h2 id="title">Articles</h2>
-
+    
     <main id = "article-body">     
 
         <div class="card" id="box1">
             <header>Article Title 1</header>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item1">Read all</button>
+                <button class = "readBtn ourBtn" href="#item1">Read all</button>
             <footer>
-                <button class="commentBtn btn" href='#comment1'>Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
+                <button class="commentBtn ourBtn" href='#comment1'>Comments</button>
+                    <p>Likes: <span id='likeCounter'></span></p>
+                    <p>Loves: <span id='heartCounter'></span></p>
+                    <p>Fire: <span id="fireCounter"></span></p>            
+                <div id="formBtnContainer" class="btn-group u-pull-right">
+                    <button id="likeEmoji" class="btn" style="background-color: white;">Like<img src="./assets/like.png"></button>
+                    <button id="heartEmoji" class="btn" style="background-color: white;">Heart<img src="./assets/heart.png"></button>
+                    <button id="fireEmoji" class="btn" style="background-color: white;">Fire<img src="./assets/fire.png"></button>
+                </div>
             </footer>
 
             <div class = "ourModal" id="item1">
@@ -92,10 +99,20 @@
         <div class="card" id="box2">
             <header>Article Title 2</header>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item2">Read all</button>
+                <button class = "readBtn ourBtn" href="#item2">Read all</button>
             <footer>
-                <button class="commentBtn btn" href='#comment2'>Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
+                <button class="commentBtn ourBtn" href='#comment2'>Comments</button>
+                <footer>
+                    <button class="commentBtn ourBtn" href='#comment1'>Comments</button>
+                        <p>Likes: <span id='likeCounter'></span></p>
+                        <p>Loves: <span id='heartCounter'></span></p>
+                        <p>Fire: <span id="fireCounter"></span></p>            
+                    <div id="formBtnContainer" class="btn-group u-pull-right">
+                        <button id="likeEmoji" class="btn" style="background-color: white;">Like<img src="./assets/like.png"></button>
+                        <button id="heartEmoji" class="btn" style="background-color: white;">Heart<img src="./assets/heart.png"></button>
+                        <button id="fireEmoji" class="btn" style="background-color: white;">Fire<img src="./assets/fire.png"></button>
+                    </div>
+                </footer>
             </footer>
 
             <div class = "ourModal" id="item2">
@@ -133,10 +150,20 @@
         <div class="card" id="box3">
             <header>Article Title 3</header>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item3">Read all</button>
+                <button class = "readBtn ourBtn" href="#item3">Read all</button>
             <footer>
-                <button class="commentBtn btn" href="#comment3">Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
+                <button class="commentBtn ourBtn" href="#comment3">Comments</button>
+                <footer>
+                    <button class="commentBtn ourBtn" href='#comment1'>Comments</button>
+                        <p>Likes: <span id='likeCounter'></span></p>
+                        <p>Loves: <span id='heartCounter'></span></p>
+                        <p>Fire: <span id="fireCounter"></span></p>            
+                    <div id="formBtnContainer" class="btn-group u-pull-right">
+                        <button id="likeEmoji" class="btn" style="background-color: white;">Like<img src="./assets/like.png"></button>
+                        <button id="heartEmoji" class="btn" style="background-color: white;">Heart<img src="./assets/heart.png"></button>
+                        <button id="fireEmoji" class="btn" style="background-color: white;">Fire<img src="./assets/fire.png"></button>
+                    </div>
+                </footer>
             </footer>
 
             <div class = "ourModal" id="item3">
@@ -175,10 +202,20 @@
         <div class="card" id="box4">
             <header>Article Title 4</header>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item4">Read all</button>
+                <button class = "readBtn ourBtn" href="#item4">Read all</button>
             <footer>
-                <button class="commentBtn btn" href='#comment4'>Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
+                <button class="commentBtn ourBtn" href='#comment4'>Comments</button>
+                <footer>
+                    <button class="commentBtn ourBtn" href='#comment1'>Comments</button>
+                        <p>Likes: <span id='likeCounter'></span></p>
+                        <p>Loves: <span id='heartCounter'></span></p>
+                        <p>Fire: <span id="fireCounter"></span></p>            
+                    <div id="formBtnContainer" class="btn-group u-pull-right">
+                        <button id="likeEmoji" class="btn" style="background-color: white;">Like<img src="./assets/like.png"></button>
+                        <button id="heartEmoji" class="btn" style="background-color: white;">Heart<img src="./assets/heart.png"></button>
+                        <button id="fireEmoji" class="btn" style="background-color: white;">Fire<img src="./assets/fire.png"></button>
+                    </div>
+                </footer>
             </footer>
 
             <div class = "ourModal" id="item4">
@@ -217,10 +254,20 @@
         <div class="card" id="box5">
             <header>Article Title 5</header>
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item5">Read all</button>
+                <button class = "readBtn ourBtn" href="#item5">Read all</button>
             <footer>
-                <button class="commentBtn btn" href='#comment5'>Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
+                <button class="commentBtn ourBtn" href='#comment5'>Comments</button>
+                <footer>
+                    <button class="commentBtn ourBtn" href='#comment1'>Comments</button>
+                        <p>Likes: <span id='likeCounter'></span></p>
+                        <p>Loves: <span id='heartCounter'></span></p>
+                        <p>Fire: <span id="fireCounter"></span></p>            
+                    <div id="formBtnContainer" class="btn-group u-pull-right">
+                        <button id="likeEmoji" class="btn" style="background-color: white;">Like<img src="./assets/like.png"></button>
+                        <button id="heartEmoji" class="btn" style="background-color: white;">Heart<img src="./assets/heart.png"></button>
+                        <button id="fireEmoji" class="btn" style="background-color: white;">Fire<img src="./assets/fire.png"></button>
+                    </div>
+                </footer>
             </footer>
 
             <div class = "ourModal" id="item5">

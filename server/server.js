@@ -1,4 +1,6 @@
 const express = require('express');
+const dotenv = require('dotenv').config();
+const axios = require('axios');
 const cors = require('cors');
 const port = 5000;
 
@@ -35,8 +37,27 @@ app.get("/articles/:id", (req, res) => {
     if(req.params.id > articles.length || req.params.id < 0){
     res.send('Please enter a number greater than 0.');
   } else {
-    res.send(articles[req.params.id-1])
-  }})
+    res.send(articles[req.params.id-1]);
+}});
+
+app.get("/gifs/:query", async (req, res) => {
+    try {
+        const searchGif = req.params.query;
+        const apiKey = process.env.API_KEY;
+
+        const response = await axios.get(`https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchGif}&limit=25&offset=0&rating=g&lang=en`);
+	
+		return res.json({
+            success: true,
+            output: response.data
+        });
+    } catch(err) {
+        return res.status(500).json({
+			success: false,
+			error_message: err
+		});
+    }
+});
 
 app.post("/entry", (req, res) => {
     try {

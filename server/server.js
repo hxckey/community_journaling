@@ -9,14 +9,14 @@ const articles = [
     {
         id: 1,
         entry: "slufgkejfdpihq", 
-        comments: ['comment one', 'comment two', 'comment three'], 
+        postComments: ['comment one', 'comment two', 'comment three'], 
         gifs: ["gif1", "gif2"],
         emojis: {like: 1, heart: 2, fire: 3}
     }, 
     {
         id: 2,
         entry: "hello world", 
-        comments: ['comment one', 'comment two', 'comment three'], 
+        postComments: ['comment one', 'comment two', 'comment three'], 
         gifs: ["gif1", "gif2"],
         emojis: {like: 1, heart: 2, fire: 3}
     }
@@ -41,7 +41,7 @@ app.get("/articles/:id", (req, res) => {
 app.post("/entry", (req, res) => {
     try {
         let newEntry =  { id: articles.length+1, entry: req.body.entry,
-        comments: req.body.comments, 
+        postComments: req.body.postComments, 
         gifs: req.body.gifs,
         emojis: req.body.emojis };
         articles.push(newEntry);
@@ -51,6 +51,20 @@ app.post("/entry", (req, res) => {
     } catch(err) {
         res.status(500).json({
             message: "Error: Article not added"
+        });
+    }
+});
+
+app.post("/newcomment", (req, res) => {
+    try{
+        let newComment = req.body.postComments;
+        articles[req.body.index].postComments.push(newComment);
+        res.status(201).json({
+            message: "Comment posted"
+        });
+    } catch(err) {
+        res.status(500).json({
+            message: "Error: Comment could not be posted"
         });
     }
 });

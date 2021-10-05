@@ -58,7 +58,7 @@
     margin: 10px 0 0 0;
 }
 
-.btn {
+.ourBtn {
     max-height: 40px;
     background-color: #e4771c;
     border: 2px solid #e4771c;
@@ -67,12 +67,12 @@
     padding: 0;
 }
 
-.btn:hover {
+.ourBtn:hover {
     background-color: #fff;
     color: #e4771c;
 }
 
-.btn:active {
+.ourBtn:active {
     background-color: #9b3908;
     color: #fff;
 }

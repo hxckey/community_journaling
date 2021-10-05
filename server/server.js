@@ -94,4 +94,14 @@ app.post("/newcomment", (req, res) => {
     }
 });
 
-module.exports = app
+// const articleContent = articles.getElementById('postInputBox')
+// const submitButton = document.getElementById('postBtn')
+
+
+// submitButton.addEventListener('click', e => {
+//     e.preventDefault();
+//     console.log(e.target.value)
+// })
+
+
+module.exports = app;

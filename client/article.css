@@ -187,19 +187,22 @@
 #gifResults {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    list-style: none;
-    padding: 0;
+}
+
+#gifResults > div {
+    padding: 20px;
+}
+#gifResults > div > button{
+    width: 100%;
+    height: 200px;
 }
 
 #gifSearchQuery {
     width: 30%;
-    border-bottom-right-radius: 0px;
-    border-top-right-radius: 0px;
 }
 
-#searchGif {
-    border-bottom-left-radius: 0px;
-    border-top-left-radius: 0px;
+#searchGif, #removeGif #clearGifs{
+    margin-left: 10px;
 }
 
 #formBtnContainer > button > img {

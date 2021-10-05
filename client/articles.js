@@ -88,7 +88,6 @@ const getGiphy = async(query) => {
         let jsonResponse = await response.json();
 
         for(result in jsonResponse.output.data){
-            //console.log(jsonResponse.output.data[result].url);
             gifs.push(jsonResponse.output.data[result].images.downsized.url);
         } 
 
@@ -98,6 +97,7 @@ const getGiphy = async(query) => {
     } 
 };
 
+let chosenGifs = [];
 
 let searchGif = document.getElementById('searchGif');
 let gifQuery = document.getElementById('gifSearchQuery');
@@ -110,11 +110,32 @@ searchGif.addEventListener('click', e => {
     getGiphy(gifQuery.value).then(resultList => {
         for(item of resultList){
             let newGif = document.createElement('div');
-            newGif.innerHTML = `<iframe src="${item}">`;
+            newGif.innerHTML = `<button style="background: url('${item}')" value="${item}" type="button" class="gifResult" onclick="chosenGifs.push('${item}')">`;
             gifResults.appendChild(newGif);
+
         }
-    }) 
+    })   
 });
+
+let clearGifs = document.getElementById('clearGifs');
+clearGifs.addEventListener('click', e => {
+    while(gifResults.firstChild){
+        gifResults.firstChild.remove();
+    }
+})
+
+let removeGif = document.getElementById('removeGif');
+removeGif.addEventListener('click', e => {
+    chosenGifs = [];
+    alert('Selected GIFs removed.');
+});
+
+let comments = [
+    {comment:'Very good', gifs: ['https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif']}, 
+    {comment:'Great post', gifs: []}, 
+    {comment:'I agree', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+    {comment:`This is the best thing I've ever read`, gifs: []},
+    {comment:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', gifs: []}
 
 const getArticles = () => {
     let articles = [];
@@ -141,30 +162,37 @@ submitBtn.addEventListener('click', e => {
     // console.log(results)
 })
 
-let exampleComments = [
-    {comment:'Very good', gif: 'https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif'}, 
-    {comment:'Great post', gif: ''}, 
-    {comment:'I agree', gif: 'https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif'},
-    {comment:`This is the best thing I've ever read`, gif: ''},
-    {comment:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', gif: ''}
 ];
 let viewComments = document.getElementById('viewComments');
 let commentsList = document.getElementById('commentsList');
 viewComments.addEventListener('click', e => {
-    for(comment in exampleComments){
+    while(commentsList.firstChild){
+        commentsList.firstChild.remove();
+    }
+    for(comment in comments){
         let commentTitle = document.createElement('dt');
         let commentDesc = document.createElement('dd');
         commentTitle.textContent = 'Anonymous';
-        commentDesc.textContent = exampleComments[comment].comment;
-        if(exampleComments[comment].gif){
-            let commentGif = document.createElement('iframe');
-            commentGif.src = exampleComments[comment].gif;
-            commentsList.insertAdjacentElement('afterbegin', commentGif);
+        commentDesc.textContent = comments[comment].comment;
+        if(comments[comment].gifs){
+            for(gifItem in comments[comment].gifs){
+                let commentGif = document.createElement('img');
+                commentGif.src = comments[comment].gifs[gifItem];
+                commentsList.insertAdjacentElement('afterbegin', commentGif);
+            } 
         }
         commentsList.insertAdjacentElement('afterbegin', commentDesc);
         commentsList.insertAdjacentElement('afterbegin', commentTitle);
     }
 });
+
+let submitComment = document.getElementById('commentsForm');
+submitComment.addEventListener('submit', e => {
+    e.preventDefault();
+    alert('Comment Submitted');
+    comments.push({comment: submitComment.comments.value, gifs: chosenGifs || []});
+    chosenGifs = [];
+})
 
 function closePostModal() {
     newPost.style.display = 'none';

@@ -72,13 +72,15 @@
 
                         <p>Comments section</p>
                         <form id="commentsForm">
-                            <textarea id="commentBox" name="comments"></textarea>
+                            <textarea name="comments"></textarea>
                             <input id="gifSearchQuery" type="text" placeholder="Search for a GIF"/>
                             <button id="searchGif" class="bg-indigo-500 text-light">Search</button>
-                            <section id="gifResults"></section>
+                            <button id="clearGifs" class="bg-primary text-light" type="button">Clear</button>
+                            <button id="removeGif" class="bg-primary text-light" type="button">Remove GIFs</button>
                             <input type="submit" class="btn-link u-pull-right w-20"/>
+                            <section id="gifResults"></section>
                         </form>
-                        <button id="viewComments" class="btn-primary mt-4">View Comments</button>
+                        <button id="viewComments" class="bg-indigo-500 text-light mt-4">View Comments</button>
                         <dl id="commentsList"></dl>
                     </section>   
                     <footer class="modalFooter">

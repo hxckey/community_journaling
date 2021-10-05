@@ -72,10 +72,19 @@
                         <span class = "closeBtn">&times;</span>
                         <h2>Comments for [Article 1 Title]</h2>
                     </header>
-                    <body class="modalBody">
+                    <section class="modalBody">
+
                         <p>Comments section</p>
-                        <p>Wow so cool</p>
-                    </body>   
+                        <form id="commentsForm">
+                            <textarea id="commentBox" name="comments"></textarea>
+                            <input id="gifSearchQuery" type="text" placeholder="Search for a GIF"/>
+                            <button id="searchGif" class="bg-indigo-500 text-light">Search</button>
+                            <section id="gifResults"></section>
+                            <input type="submit" class="btn-link u-pull-right w-20"/>
+                        </form>
+                        <button id="viewComments" class="btn-primary mt-4">View Comments</button>
+                        <dl id="commentsList"></dl>
+                    </section>   
                     <footer class="modalFooter">
                         <h3>Please read our Code of Conduct before posting</h3>
                     </footer> 

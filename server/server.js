@@ -29,8 +29,10 @@ app.listen(port, () =>{
 
 app.get("/", (req, res) => res.send("Welcome to StreetHub"));
 
+// returns all articles
 app.get("/articles", (req, res) => res.json({results: articles}));
 
+//returns an article by id 
 app.get("/articles/:id", (req, res) => {
     if(req.params.id > articles.length || req.params.id < 0){
     res.send('Please enter a number greater than 0.');
@@ -38,6 +40,7 @@ app.get("/articles/:id", (req, res) => {
     res.send(articles[req.params.id-1])
   }})
 
+// posts a new article
 app.post("/entry", (req, res) => {
     try {
         let newEntry =  { id: articles.length+1, entry: req.body.entry,
@@ -55,6 +58,7 @@ app.post("/entry", (req, res) => {
     }
 });
 
+// posts a new comment and attaches it to the article
 app.post("/newcomment", (req, res) => {
     try{
         let newComment = req.body.postComments;

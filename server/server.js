@@ -64,7 +64,7 @@ app.get("/gifs/:query", async (req, res) => {
 // posts a new article
 app.post("/entry", (req, res) => {
     try {
-        let newEntry =  { id: articles.length+1, entry: articleContent.value,
+        let newEntry =  { id: articles.length+1, entry: req.body.entry,
         postComments: req.body.postComments, 
         gifs: req.body.gifs,
         emojis: req.body.emojis };
@@ -94,14 +94,14 @@ app.post("/newcomment", (req, res) => {
     }
 });
 
-const articleContent = document.getElementById('postInputBox')
-const submitButton = document.getElementById('postBtn')
+// const articleContent = articles.getElementById('postInputBox')
+// const submitButton = document.getElementById('postBtn')
 
 
-submitButton.addEventListener('click', e => {
-    e.preventDefault();
-    console.log(e.target.value)
-})
+// submitButton.addEventListener('click', e => {
+//     e.preventDefault();
+//     console.log(e.target.value)
+// })
 
 
 module.exports = app;

@@ -114,6 +114,46 @@ searchGif.addEventListener('click', e => {
     }) 
 });
 
+const getArticles = () => {
+    let articles = [];
+    fetch('http://localhost:5000/articles')
+    .then(response => response.json())
+    // let ressies = response.json
+    .then(data => {
+        console.log(data)
+        articles.push(data)
+        console.log(articles);
+    });
+    // articles.push(data)
+    // console.log(ressies)
+    // try {
+    //     let response = await fetch('http://localhost:5000/articles')
+    //     let articleResponse = await response.json();
+    //     for (result in articleResponse.output){
+    //         //console.log(jsonResponse.output.data[result].url);
+    //         articles.push(articleResponse.output);
+    //     } 
+    //     console.log(jsonResponse.output)
+    //     console.log(articles)
+    //     return articles;
+    // } catch(error) {
+    //     console.error('There was an error handling your request' + error.messagex)
+    // }
+};
+
+let inputBox = document.getElementById('postInputBox');
+let submitBtn = document.getElementById('postBtn');
+submitBtn.addEventListener('click', e => {
+    e.preventDefault();
+    let results = [];
+    getArticles()
+    // .then(result => result.json)
+    // console.log(result)
+    // .then(data => console.log(data))
+    // results.push(data);
+    // console.log(results)
+})
+
 let exampleComments = [
     {comment:'Very good', gif: 'https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif'}, 
     {comment:'Great post', gif: ''}, 

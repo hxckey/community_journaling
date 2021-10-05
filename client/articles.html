@@ -35,7 +35,7 @@
     </header> 
 
     <h2 id="title">Articles</h2>
-
+    
     <main id = "article-body">     
 
         <div class="card" id="box1">
@@ -44,7 +44,11 @@
                 <button class = "readBtn btn" href="#item1">Read all</button>
             <footer>
                 <button class="commentBtn btn" href='#comment1'>Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
+                <div id="formBtnContainer" class="btn-group u-pull-right">
+                    <button id="likeEmoji" class="btn-info">Like<img src="./assets/notLiked.png" onclick='addLike()'></button>
+                    <button id="heartEmoji" class="btn-info">Heart<img src="./assets/heart.png"></button>
+                    <button id="fireEmoji" class="btn-info">Fire<img src="./assets/fire.png"></button>
+                </div>
             </footer>
 
             <div class = "ourModal" id="item1">

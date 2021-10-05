@@ -1,4 +1,4 @@
-/// Navbar JS
+//// Navbar JS
 window.onscroll = () => windowScroll();
 
 const windowScroll = () => {
@@ -7,7 +7,7 @@ const windowScroll = () => {
     let navPostButton = document.getElementById('newPostButton');
 
     if (document.documentElement.scrollTop > 80) {
-        navLogo.src = 'assets/logo/logo_small_icon_only_inverted.png';
+        navLogo.src = 'assets/updated logo/logo_small_icon_only_inverted.png';
         navLogo.style.height = '50px';
         nav.style.height = '75px';
         navLogo.style.top = '12px';
@@ -16,7 +16,7 @@ const windowScroll = () => {
         nav.style.transition = 'height 0.2s'
 
     } else {
-        navLogo.src = 'assets/logo/logo_small.png';
+        navLogo.src = './assets/updated logo/logo_small.png';
         navLogo.style.height = '80px';
         nav.style.height = '100px';
         navLogo.style.top = '10px';
@@ -25,6 +25,8 @@ const windowScroll = () => {
         nav.style.transition = 'height 0.2s'
     }
 }
+
+
 
 //// Functionality for the article modals 
 // Store the required arrays
@@ -93,6 +95,24 @@ function outsidePostClick(e) {
 postBtn.addEventListener('click', openPostModal);
 closePostBtn.addEventListener('click', closePostModal);
 window.addEventListener('click', outsidePostClick);
+
+
+
+//// Emoji counter
+const like = document.getElementById('likeEmoji');
+const heart = document.getElementById('heartEmoji');
+const fire = document.getElementById('fireEmoji');
+
+
+
+
+
+
+
+
+
+
+
 
 
 

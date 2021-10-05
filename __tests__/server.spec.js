@@ -34,6 +34,18 @@ describe('API routes', () => {
         return superT(api)
         .get('/articles/1')
         .expect(200)
-        .expect('hello')
     })
+
+    test('test post path for articles', () => {
+        return superT(api)
+        .post('/entry')
+        .expect(201)
+    })
+
+    test('test post path for comments', () => {
+        return superT(api)
+        .post('/newcomment')
+        .expect(201)
+    })
+    
 });

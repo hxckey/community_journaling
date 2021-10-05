@@ -1,4 +1,4 @@
-/// Navbar JS
+//// Navbar JS
 window.onscroll = () => windowScroll();
 
 const windowScroll = () => {
@@ -7,7 +7,7 @@ const windowScroll = () => {
     let navPostButton = document.getElementById('newPostButton');
 
     if (document.documentElement.scrollTop > 80) {
-        navLogo.src = 'assets/logo/logo_small_icon_only_inverted.png';
+        navLogo.src = 'assets/updated logo/logo_small_icon_only_inverted.png';
         navLogo.style.height = '50px';
         nav.style.height = '75px';
         navLogo.style.top = '12px';
@@ -16,7 +16,7 @@ const windowScroll = () => {
         nav.style.transition = 'height 0.2s'
 
     } else {
-        navLogo.src = 'assets/logo/logo_small.png';
+        navLogo.src = './assets/updated logo/logo_small.png';
         navLogo.style.height = '80px';
         nav.style.height = '100px';
         navLogo.style.top = '10px';
@@ -25,6 +25,8 @@ const windowScroll = () => {
         nav.style.transition = 'height 0.2s'
     }
 }
+
+
 
 //// Functionality for the article modals 
 // Store the required arrays
@@ -178,6 +180,92 @@ function outsidePostClick(e) {
 postBtn.addEventListener('click', openPostModal);
 closePostBtn.addEventListener('click', closePostModal);
 window.addEventListener('click', outsidePostClick);
+
+
+
+//// Emoji counter
+//Selectors
+const likeBtn = document.getElementById('likeEmoji');
+const heartBtn = document.getElementById('heartEmoji');
+const fireBtn = document.getElementById('fireEmoji');
+
+//Event listener to change button style when clicked and alter the coutner
+
+// Sets the coutners intialy to zero and adds them to the html
+let likeCount = 7;
+let heartCount = 3;
+let fireCount = 5;
+
+const likeCounter = document.getElementById('likeCounter');
+const heartCounter = document.getElementById('heartCounter');
+const fireCounter = document.getElementById('fireCounter');
+
+window.addEventListener('load', () => {
+    likeCounter.textContent = likeCount;
+    heartCounter.textContent = heartCount;
+    fireCounter.textContent = fireCount;
+})
+
+
+// Like button
+likeBtn.addEventListener('click', () => {
+    if(likeBtn.style.backgroundColor === 'white') {
+        likeBtn.style.backgroundColor = 'rgb(41,114,250)';
+        likeBtn.style.border = 'black';
+        likeBtn.style.fontWeight = 'bolder';
+        likeCount ++;
+        likeCounter.textContent = likeCount;
+    } else {
+        likeBtn.style.backgroundColor = 'white';
+        likeBtn.style.border = 'white';
+        likeBtn.style.fontWeight = 'normal';
+        likeCount --;
+        likeCounter.textContent = likeCount
+    }
+});
+
+// Love button
+heartBtn.addEventListener('click', () => {
+    if(heartBtn.style.backgroundColor === 'white') {
+        heartBtn.style.backgroundColor = 'rgb(211,105,116)';
+        heartBtn.style.border = 'black';
+        heartBtn.style.fontWeight = 'bolder';
+        heartCount++;
+        heartCounter.textContent = heartCount;
+    } else {
+        heartBtn.style.backgroundColor = 'white';
+        heartBtn.style.border = 'white';
+        heartBtn.style.fontWeight = 'normal'
+        heartCount--;
+        heartCounter.textContent = heartCount
+    }
+});
+
+// Fire button
+fireBtn.addEventListener('click', () => {
+    if(fireBtn.style.backgroundColor === 'white') {
+        fireBtn.style.backgroundColor = 'rgb(250,182,51)';
+        fireBtn.style.border = 'black';
+        fireBtn.style.fontWeight = 'bolder';
+        fireCount++;
+        fireCounter.textContent = fireCount;
+    } else {
+         fireBtn.style.backgroundColor = 'white';
+         fireBtn.style.border = 'white';
+         fireBtn.style.fontWeight = 'normal'
+         fireCount--;
+         fireCounter.textContent = fireCount
+    }
+});
+
+
+
+
+
+
+
+
+
 
 
 

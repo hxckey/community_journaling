@@ -18,7 +18,7 @@ const windowScroll = () => {
     let navButton = document.getElementById('getStartedButton');
 
     if (document.documentElement.scrollTop > 80) {
-        navLogo.src = 'assets/logo/logo_small_icon_only_inverted.png';
+        navLogo.src = 'assets/updated logo/logo_small_icon_only_inverted.png';
         navLogo.style.height = '50px';
         nav.style.height = '75px';
         navLogo.style.top = '12px';
@@ -27,7 +27,7 @@ const windowScroll = () => {
         nav.style.transition = 'height 0.2s'
 
     } else {
-        navLogo.src = 'assets/logo/logo_small.png';
+        navLogo.src = 'assets/updated logo/logo_small.png';
         navLogo.style.height = '80px';
         nav.style.height = '100px';
         navLogo.style.top = '10px';

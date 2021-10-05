@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./style.css" type="text/css">
     <link rel="stylesheet" href="article.css">
     <script defer src="articles.js"></script>
+    <script defer src="postarticle.js"></script>
 </head>
 
 <body class="bg-purple-200 mt-16">
@@ -24,8 +25,8 @@
                         <h4>Write your post below</h4>
                     </header>      
                     <body class="modalBody">
-                        <textarea name="postInputBox" id="postInputBox" rows="15" autofocus required maxlength="2000" placeholder="Enter text here, 2000 character limit"></textarea>
-                        <form action="postInputBox" id='postFooter'>
+                        <form method="POST" action="https://localhost:5000/entry" id='postFooter'>
+                            <textarea name="postInputBox" id="postInputBox" rows="15" autofocus required maxlength="2000" placeholder="Enter text here, 2000 character limit"></textarea>
                             <button disabled id='gifBtn' class='btn'>Add a Gif</button>
                             <input id='postBtn' type="submit" value="Post your article!" formmethod="POST">
                         </form>                        

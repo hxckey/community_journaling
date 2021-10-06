@@ -105,14 +105,23 @@ app.post("/newcomment", (req, res) => {
     }
 });
 
-// const articleContent = articles.getElementById('postInputBox')
-// const submitButton = document.getElementById('postBtn')
 
-
-// submitButton.addEventListener('click', e => {
-//     e.preventDefault();
-//     console.log(e.target.value)
-// })
-
+// Delete an entry
+app.delete("/articles/delete/:id" , (req, res) => {
+    try {
+        if(req.params.id > articles.length || req.params.id < 0){
+            res.send('Please enter a number greater than 0.');
+        } else { 
+        delete articles[0].entry;
+        res.status(204).json({
+            message: "Article deleted"
+        })}
+        console.log(articles)
+    } catch(err) {
+        res.status(500).json({
+            message: "Error: article could not be deleted."
+        })
+    }
+})
 
 module.exports = app;

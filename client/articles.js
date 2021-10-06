@@ -1,3 +1,5 @@
+// const e = require("express");
+
 //// Navbar JS
 window.onscroll = () => windowScroll();
 
@@ -63,6 +65,7 @@ window.onclick = function(event) {
 }
 
 
+
 const addEmoji = async (likeCount, heartCount, fireCount) => {
     try {
         await fetch('http://localhost:5000/emojis/update/:id', {
@@ -76,15 +79,135 @@ const addEmoji = async (likeCount, heartCount, fireCount) => {
 }
 
 const showModal = (item, title, entry) => {
+const getGiphy = async(query) => {
+    let gifs = [];
+    try {
+        let response =  await fetch(`http://localhost:5000/gifs/${query}`)
+        let jsonResponse = await response.json();
+        
+        for(result in jsonResponse.output.data){
+            gifs.push(jsonResponse.output.data[result].images.downsized.url);
+        } 
+        
+        return gifs;
+    } catch(error) {
+        console.error("There was an error handling your request: " + error.message);
+    } 
+};
+
+let chosenGifs = [];
+
+const postComments = async (newComment, newGifs, item) => {
+    console.log('nc ' + newComment + ' ng ' + newGifs + ' item ' + item)
+    try {
+        await fetch(`http://localhost:5000/newcomment/${item}`, {
+        method: "POST",
+        body: JSON.stringify({comment: newComment, gifs: newGifs}),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+    } catch(err) {
+        console.log(err);
+    }
+}
+
+const commentDisplay = (item, comments) => {  
+    let viewComments = document.getElementById('viewComments');
+    let commentsList = document.getElementById('commentsList');
+    let searchGif = document.getElementById('searchGif');
+    let gifQuery = document.getElementById('gifSearchQuery');
+    let gifResults = document.getElementById('gifResults');
+    let submitComment = document.getElementById('commentsForm');
+
+    while(commentsList.firstChild){
+        commentsList.firstChild.remove();
+    }
+    searchGif.addEventListener('click', e => {
+        e.preventDefault();
+        while(gifResults.firstChild){
+            gifResults.firstChild.remove();
+        }
+        getGiphy(gifQuery.value).then(resultList => {
+            for(item of resultList){
+                let newGif = document.createElement('div');
+                newGif.innerHTML = `<button style="background: url('${item}')" value="${item}" type="button" class="gifResult" onclick="chosenGifs.push('${item}'); alert('GIF Added')">`;
+                gifResults.appendChild(newGif);
+                
+            }
+        })   
+    });
+
+    let clearGifs = document.getElementById('clearGifs');
+    clearGifs.addEventListener('click', e => {
+        while(gifResults.firstChild){
+            gifResults.firstChild.remove();
+        }
+    })
+
+    let removeGif = document.getElementById('removeGif');
+    removeGif.addEventListener('click', e => {
+        chosenGifs = [];
+        alert('Selected GIFs removed.');
+    });
+
+    viewComments.addEventListener('click', e => {
+        while(commentsList.firstChild){
+            commentsList.firstChild.remove();
+        }
+        fetch('http://localhost:5000/articles')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                let commentList = [];
+                for(resultObj of data.results[item].postComments){
+                    commentList.push({comment: resultObj.comment, gifs: resultObj.gifs})
+                }
+                //commentList.push(data.results[item].postComments)
+                for(commentText of commentList){
+                    let commentTitle = document.createElement('dt');
+                    let commentDesc = document.createElement('dd');
+                    commentTitle.textContent = 'Anonymous';
+                    console.log(commentText)
+                    commentDesc.textContent = commentText.comment;
+                    if(commentText.gifs){
+                        for(gifItem in commentText.gifs){
+                            console.log(gifItem)
+                            let commentGif = document.createElement('img');
+                            commentGif.src = commentText.gifs[gifItem];
+                            commentsList.insertAdjacentElement('afterbegin', commentGif);
+                        } 
+                    }
+                    commentsList.insertAdjacentElement('afterbegin', commentDesc);
+                    commentsList.insertAdjacentElement('afterbegin', commentTitle);
+                }
+            });
+    });
+        
+    submitComment.addEventListener('submit', e => {
+        e.preventDefault();
+        try {
+            postComments(submitComment.comments.value, chosenGifs || [], item);
+            alert('Comment Submitted');
+            chosenGifs = [];
+            submitComment.reset();
+        } catch(err) {
+            console.log(err);
+        }
+    });
+}
+
+const showModal = (item, data) => {
     let seeMore = document.getElementById(`viewPost${item}`);
     seeMore.addEventListener('click', e => {
         let modalTitle = document.getElementById('modalTitle');
-        let articleContent = document.getElementById('articleContent');
-        modalTitle.textContent = title;
-        articleContent.textContent = entry;   
+        modalTitle.textContent = data.title;
+        articleContent.textContent = data.entry;   
         viewModal.style.display = 'block';
+        let commentsData = data.postComments;
+        commentDisplay(item, commentsData);
     });
+    
 }
+
 // Functionality for New Post button
 const postBtn = document.getElementById('newPostButton')
 const newPost = document.getElementById('newPost');
@@ -95,10 +218,7 @@ const getArticles = () => {
     .then(response => response.json())
     // let ressies = response.json
     .then(data => {
-        console.log(data)
         articles.push(data)
-        console.log(articles);
-
         //display articles into boxes 
         for (item in data.results){
             let displayArticle = document.createElement('div')
@@ -119,9 +239,12 @@ const getArticles = () => {
                         </div>
                     </footer>
                 </div>`
-            articleBody.append(displayArticle)
-         
-            showModal(item, data.results[item].title, data.results[item].entry);
+            
+            articleBody.append(displayArticle);
+
+            showModal(item, data.results[item]);
+            
+            // Functions
             //// Emoji counter
             //Selectors
             const likeBtn = displayArticle.querySelectorAll('.likeEmoji');
@@ -140,7 +263,7 @@ const getArticles = () => {
             likeCounter.textContent = likeCount;
             heartCounter.textContent = heartCount;
             fireCounter.textContent = fireCount;
-                                      
+          
                             // Like button
                             likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
                                 if(likebutton.style.backgroundColor === 'white') {
@@ -196,128 +319,69 @@ const getArticles = () => {
                             }));
                         }
                         
-                    });
+    });
                             
-                        };
+};
                         
                         
                         
                         
                         
-            // change listener to be a display artidcles
-            let inputBox = document.getElementById('postInputBox');
-            let submitBtn = document.getElementById('postBtn');
-            window.addEventListener('load', e => {
-                e.preventDefault();
-                let results = [];
-                getArticles()
-            })
-            
-            function closePostModal() {
-                newPost.style.display = 'none';
-            }
-            
-            function openPostModal() {
-                newPost.style.display = 'block';
-            }
-            
-            function outsidePostClick(e) {
-                if(e.target == newPost){
-                    newPost.style.display = 'none';
-                }
-            }
-            
-            // Listens for clicks
-            postBtn.addEventListener('click', openPostModal);
-            closePostBtn.addEventListener('click', closePostModal);
-            window.addEventListener('click', outsidePostClick);
-            
-            const getGiphy = async(query) => {
-                let gifs = [];
-                try {
-                    let response =  await fetch(`http://localhost:5000/gifs/${query}`)
-                    let jsonResponse = await response.json();
-                    
-                    for(result in jsonResponse.output.data){
-                        gifs.push(jsonResponse.output.data[result].images.downsized.url);
-                    } 
-                    
-                    return gifs;
-                } catch(error) {
-                    console.error("There was an error handling your request: " + error.message);
-                } 
-            };
-            
-            let chosenGifs = [];
-            
-            let searchGif = document.getElementById('searchGif');
-            let gifQuery = document.getElementById('gifSearchQuery');
-            let gifResults = document.getElementById('gifResults');
-            searchGif.addEventListener('click', e => {
-                e.preventDefault();
-                while(gifResults.firstChild){
-                    gifResults.firstChild.remove();
-                }
-                getGiphy(gifQuery.value).then(resultList => {
-                    for(item of resultList){
-                        let newGif = document.createElement('div');
-                        newGif.innerHTML = `<button style="background: url('${item}')" value="${item}" type="button" class="gifResult" onclick="chosenGifs.push('${item}')">`;
-                        gifResults.appendChild(newGif);
-                        
-                    }
-                })   
-            });
-            
-            let clearGifs = document.getElementById('clearGifs');
-            clearGifs.addEventListener('click', e => {
-                while(gifResults.firstChild){
-                    gifResults.firstChild.remove();
-                }
-            })
-            
-            let removeGif = document.getElementById('removeGif');
-            removeGif.addEventListener('click', e => {
-                chosenGifs = [];
-                alert('Selected GIFs removed.');
-            });
-            
-            /* let comments = [
-                {comment:'Very good', gifs: ['https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif']}, 
-                {comment:'Great post', gifs: []}, 
-                {comment:'I agree', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
-                {comment:`This is the best thing I've ever read`, gifs: []},
-                {comment:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', gifs: []}
-            ]
-             */
-            
-            let viewComments = document.getElementById('viewComments');
-            let commentsList = document.getElementById('commentsList');
-            viewComments.addEventListener('click', e => {
-                while(commentsList.firstChild){
-                    commentsList.firstChild.remove();
-                }
-                for(comment of data.results[item].postComments){
-                    let commentTitle = document.createElement('dt');
-                    let commentDesc = document.createElement('dd');
-                    commentTitle.textContent = 'Anonymous';
-                    commentDesc.textContent = data.results[item].postComments[comment];
-                    if(comments[comment].gifs){
-                        for(gifItem in data.results[item].gifs){
-                            let commentGif = document.createElement('img');
-                            commentGif.src = data.results[item].gifs.gifs[gifItem];
-                            commentsList.insertAdjacentElement('afterbegin', commentGif);
-                        } 
-                    }
-                    commentsList.insertAdjacentElement('afterbegin', commentDesc);
-                    commentsList.insertAdjacentElement('afterbegin', commentTitle);
-                }
-            });
-                
-                let submitComment = document.getElementById('commentsForm');
-                submitComment.addEventListener('submit', e => {
-                    e.preventDefault();
-                    alert('Comment Submitted');
-                    //comments.push({comment: submitComment.comments.value, gifs: chosenGifs || []});
-                    chosenGifs = [];
-                })
+// change listener to be a display artidcles
+let inputBox = document.getElementById('postInputBox');
+let submitBtn = document.getElementById('postBtn');
+window.addEventListener('load', e => {
+    e.preventDefault();
+    let results = [];
+    getArticles()
+})
 
+function closePostModal() {
+    newPost.style.display = 'none';
+}
+
+function openPostModal() {
+    newPost.style.display = 'block';
+}
+
+function outsidePostClick(e) {
+    if(e.target == newPost){
+        newPost.style.display = 'none';
+    }
+}
+
+// Listens for clicks
+postBtn.addEventListener('click', openPostModal);
+closePostBtn.addEventListener('click', closePostModal);
+window.addEventListener('click', outsidePostClick);
+
+
+
+let articleInput = document.getElementById('postInputBox')
+let articleSubmit = document.getElementById('postBtn')
+let titleInput = document.getElementById('titleInput')
+let articleForm = document.getElementById('postFooter')
+let newEntry = articleInput.value
+
+const postArticle = async (newEntry) => {
+    // e.preventDefault();
+    try {
+        await fetch('http://localhost:5000/entry', {
+            method: "POST",
+            body: JSON.stringify({entry: articleInput.value, title: titleInput.value}),
+            headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+        console.log(articleInput.value)
+    } catch(err) {
+        console.log("Error: " + err)
+    }
+}
+
+articleForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    postArticle(articleInput.value)
+    articleForm.reset();
+    window.alert('Your post has been submitted')
+    closePostModal();
+    location.reload();
+});

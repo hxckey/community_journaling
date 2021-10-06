@@ -45,13 +45,13 @@ for (let i = 0; i < readBtn.length; i++) {
 }
 
 // When the user clicks the 'Comments' button, open the comments modal
-for (let i = 0; i < commentsBtn.length; i++) {
+/* for (let i = 0; i < commentsBtn.length; i++) {
     commentsBtn[i].onclick = function(e) {
        e.preventDefault();
        let modal = document.querySelector(e.target.getAttribute("href"));
        modal.style.display = "block";
     }
-}
+} */
 
 // When the user clicks on (x), close the modal
 for (let i = 0; i < closeBtn.length; i++) {
@@ -71,11 +71,20 @@ window.onclick = function(event) {
     }
 }
 
+const showModal = (item, title, entry) => {
+    let seeMore = document.getElementById(`viewPost${item}`);
+    seeMore.addEventListener('click', e => {
+        let modalTitle = document.getElementById('modalTitle');
+        let articleContent = document.getElementById('articleContent');
+        modalTitle.textContent = title;
+        articleContent.textContent = entry;   
+        viewModal.style.display = 'block';
+    });
+}
 // Functionality for New Post button
 const postBtn = document.getElementById('newPostButton')
 const newPost = document.getElementById('newPost');
 const closePost = document.getElementById('closepostBtn')
-
 const getArticles = () => {
     let articles = [];
     fetch('http://localhost:5000/articles')
@@ -85,17 +94,17 @@ const getArticles = () => {
         console.log(data)
         articles.push(data)
         console.log(articles);
+
         //display articles into boxes 
         for (item in data.results){
             let displayArticle = document.createElement('div')
             let articleBody = document.getElementById('article-body')
             displayArticle.innerHTML= 
                 `<div class="card" id="box1">
-                    <header>Article Title 1</header>
+                    <header>${data.results[item].title}</header>
                     <p>${data.results[item].entry}</p>
-                    <button class = "readBtn ourBtn" href="#item1">Read all</button>
+                    <a class = "commentBtn" id="viewPost${item}">See more</a>
                     <footer>
-                        <button class="commentBtn ourBtn" href='#comment1'>Comments</button>
                         <p>Likes: <span id='likeCounter${item}'></span></p>
                         <p>Loves: <span id='heartCounter${item}'></span></p>
                         <p>Fire: <span id="fireCounter${item}"></span></p>            
@@ -106,31 +115,29 @@ const getArticles = () => {
                         </div>
                     </footer>
                 </div>`
-                            articleBody.append(displayArticle)
+            articleBody.append(displayArticle)
+         
+            showModal(item, data.results[item].title, data.results[item].entry);
+            // Functions
+            //// Emoji counter
+            //Selectors
+            const likeBtn = displayArticle.querySelectorAll('.likeEmoji');
+            const heartBtn = displayArticle.querySelectorAll('.heartEmoji');
+            const fireBtn = displayArticle.querySelectorAll('.fireEmoji');
                             
+            // Sets the coutners intialy to zero and adds them to the html
+            let likeCount = 0;
+            let heartCount = 0;
+            let fireCount = 0;
                             
-                            // Functions
-                            //// Emoji counter
-                            //Selectors
-                            const likeBtn = displayArticle.querySelectorAll('.likeEmoji');
-                            const heartBtn = displayArticle.querySelectorAll('.heartEmoji');
-                            const fireBtn = displayArticle.querySelectorAll('.fireEmoji');
-                            
-                            //Event listener to change button style when clicked and alter the coutner
-                            
-                            // Sets the coutners intialy to zero and adds them to the html
-                            let likeCount = 0;
-                            let heartCount = 0;
-                            let fireCount = 0;
-                            
-                            let likeCounter = document.getElementById(`likeCounter${item}`);
-                            let heartCounter = document.getElementById(`heartCounter${item}`);
-                            let fireCounter = document.getElementById(`fireCounter${item}`);
+            let likeCounter = document.getElementById(`likeCounter${item}`);
+            let heartCounter = document.getElementById(`heartCounter${item}`);
+            let fireCounter = document.getElementById(`fireCounter${item}`);
                         
                             
-                            likeCounter.textContent = likeCount;
-                            heartCounter.textContent = heartCount;
-                            fireCounter.textContent = fireCount;
+            likeCounter.textContent = likeCount;
+            heartCounter.textContent = heartCount;
+            fireCounter.textContent = fireCount;
                             
                             // Like button
                             likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
@@ -185,7 +192,6 @@ const getArticles = () => {
                                 }
                             }));
                         }
-                        
                         
                     });
                             
@@ -272,14 +278,14 @@ const getArticles = () => {
                 alert('Selected GIFs removed.');
             });
             
-            let comments = [
+            /* let comments = [
                 {comment:'Very good', gifs: ['https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif']}, 
                 {comment:'Great post', gifs: []}, 
                 {comment:'I agree', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
                 {comment:`This is the best thing I've ever read`, gifs: []},
                 {comment:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', gifs: []}
             ]
-            
+             */
             
             let viewComments = document.getElementById('viewComments');
             let commentsList = document.getElementById('commentsList');
@@ -287,15 +293,15 @@ const getArticles = () => {
                 while(commentsList.firstChild){
                     commentsList.firstChild.remove();
                 }
-                for(comment of comments){
+                for(comment of data.results[item].postComments){
                     let commentTitle = document.createElement('dt');
                     let commentDesc = document.createElement('dd');
                     commentTitle.textContent = 'Anonymous';
-                    commentDesc.textContent = comments[comment].comment;
+                    commentDesc.textContent = data.results[item].postComments[comment];
                     if(comments[comment].gifs){
-                        for(gifItem in comments[comment].gifs){
+                        for(gifItem in data.results[item].gifs){
                             let commentGif = document.createElement('img');
-                            commentGif.src = comments[comment].gifs[gifItem];
+                            commentGif.src = data.results[item].gifs.gifs[gifItem];
                             commentsList.insertAdjacentElement('afterbegin', commentGif);
                         } 
                     }
@@ -308,16 +314,10 @@ const getArticles = () => {
                 submitComment.addEventListener('submit', e => {
                     e.preventDefault();
                     alert('Comment Submitted');
-                    comments.push({comment: submitComment.comments.value, gifs: chosenGifs || []});
+                    //comments.push({comment: submitComment.comments.value, gifs: chosenGifs || []});
                     chosenGifs = [];
                 })
-                
-                
-                
-                
-                
-                        
-                        
+
 
 
 

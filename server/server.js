@@ -12,15 +12,22 @@ const articles = [
         id: 1,
         title: "first article",
         entry: "slufgkejfdpihq", 
-        postComments: ['comment one', 'comment two', 'comment three'], 
-        gifs: ["gif1", "gif2"],
+        postComments: [
+            {comment: 'comment one', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+            {comment: 'comment two', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+            {comment: 'comment three', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']}
+        ], 
         emojis: {like: 1, heart: 2, fire: 3}
     }, 
     {
         id: 2,
         title: "second article",
         entry: "hello world", 
-        postComments: ['comment one', 'comment two', 'comment three'], 
+        postComments: [
+            {comment: 'comment four', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+            {comment: 'comment five', gifs: []},
+            {comment: 'comment six', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']}
+        ], 
         gifs: ["gif1", "gif2"],
         emojis: {like: 1, heart: 2, fire: 3}
     }
@@ -84,10 +91,11 @@ app.post("/entry", (req, res) => {
 });
 
 // posts a new comment and attaches it to the article
-app.post("/newcomment", (req, res) => {
+app.post("/newcomment/:id", (req, res) => {
     try{
-        let newComment = req.body.postComments;
-        articles[req.body.index].postComments.push(newComment);
+        let newComment = req.body.comment;
+        let newGifs = req.body.gifs;
+        articles[req.params.id].postComments.push({comment: newComment, gifs: newGifs});
         res.status(201).json({
             message: "Comment posted"
         });
@@ -105,6 +113,7 @@ app.delete("/articles/delete/:id" , (req, res) => {
         if(req.params.id > articles.length || req.params.id < 0){
             res.send('Please enter a number greater than 0.');
         } else { 
+
         delete articles[req.params.id-1];
         res.status(204).json({
             message: "Article deleted",

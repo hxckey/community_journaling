@@ -44,15 +44,6 @@ for (let i = 0; i < readBtn.length; i++) {
     }
 }
 
-// When the user clicks the 'Comments' button, open the comments modal
-/* for (let i = 0; i < commentsBtn.length; i++) {
-    commentsBtn[i].onclick = function(e) {
-       e.preventDefault();
-       let modal = document.querySelector(e.target.getAttribute("href"));
-       modal.style.display = "block";
-    }
-} */
-
 // When the user clicks on (x), close the modal
 for (let i = 0; i < closeBtn.length; i++) {
     closeBtn[i].onclick = function() {
@@ -68,6 +59,19 @@ window.onclick = function(event) {
     for (let index in modals) {
         if (typeof modals[index].style !== 'undefined') modals[index].style.display = "none";    
         }
+    }
+}
+
+
+const addEmoji = async (likeCount, heartCount, fireCount) => {
+    try {
+        await fetch('http://localhost:5000/emojis/update/:id', {
+            method: "PUT",
+            body: JSON.stringify({like: likeCount, heart: heartCount, fire: fireCount}),
+            headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+    } catch(err) {
+        console.log("Error: " + err)
     }
 }
 
@@ -105,27 +109,26 @@ const getArticles = () => {
                     <p>${data.results[item].entry}</p>
                     <a class = "commentBtn" id="viewPost${item}">See more</a>
                     <footer>
-                        <p>Likes: <span id='likeCounter${item}'></span></p>
-                        <p>Loves: <span id='heartCounter${item}'></span></p>
-                        <p>Fire: <span id="fireCounter${item}"></span></p>            
+                        <p></p>
+                        <p></p>
+                        <p></p>            
                         <div id="formBtnContainer" class="btn-group u-pull-right">
-                            <button class="btn likeEmoji" style="background-color: white;">Like<img src="./assets/like.png"></button>
-                            <button class="btn heartEmoji" style="background-color: white;">Heart<img src="./assets/heart.png"></button>
-                            <button class="btn fireEmoji" style="background-color: white;">Fire<img src="./assets/fire.png"></button>
+                            <button class="btn likeEmoji" style="background-color: white;">Likes: <span id='likeCounter${item}'></span><img src="./assets/like.png"></button>
+                            <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}'><img src="./assets/heart.png"></button>
+                            <button class="btn fireEmoji" style="background-color: white;">Fire: <span id="fireCounter${item}"></span><img src="./assets/fire.png"></button>
                         </div>
                     </footer>
                 </div>`
             articleBody.append(displayArticle)
          
             showModal(item, data.results[item].title, data.results[item].entry);
-            // Functions
             //// Emoji counter
             //Selectors
             const likeBtn = displayArticle.querySelectorAll('.likeEmoji');
             const heartBtn = displayArticle.querySelectorAll('.heartEmoji');
             const fireBtn = displayArticle.querySelectorAll('.fireEmoji');
                             
-            // Sets the coutners intialy to zero and adds them to the html
+            // Sets the counters intialy to zero and adds them to the html
             let likeCount = 0;
             let heartCount = 0;
             let fireCount = 0;
@@ -133,12 +136,11 @@ const getArticles = () => {
             let likeCounter = document.getElementById(`likeCounter${item}`);
             let heartCounter = document.getElementById(`heartCounter${item}`);
             let fireCounter = document.getElementById(`fireCounter${item}`);
-                        
-                            
+                                                    
             likeCounter.textContent = likeCount;
             heartCounter.textContent = heartCount;
             fireCounter.textContent = fireCount;
-                            
+                                      
                             // Like button
                             likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
                                 if(likebutton.style.backgroundColor === 'white') {
@@ -147,25 +149,25 @@ const getArticles = () => {
                                     likebutton.style.fontWeight = 'bolder';
                                     likeCount ++;
                                     likeCounter.textContent = likeCount;
-                                    console.log(likeCount)
+                                    addEmoji();
                                 } else {
                                     likebutton.style.backgroundColor = 'white';
                                     likebutton.style.border = 'white';
                                     likebutton.style.fontWeight = 'normal';
                                     likeCount --;
                                     likeCounter.textContent = likeCount
-                                    console.log(likeCount)
                                 }
                             }));
                             
-                            // Love button
+                            // Heart button
                             heartBtn.forEach(heartbutton => heartbutton.addEventListener('click', (e) => {
                                 if(heartbutton.style.backgroundColor === 'white') {
                                     heartbutton.style.backgroundColor = 'rgb(211,105,116)';
                                     heartbutton.style.border = 'black';
                                     heartbutton.style.fontWeight = 'bolder';
                                     heartCount++;
-                                    heartCounter.textContent = heartCount;
+                                    heartCounter.textContent = heartCount; 
+                                    addEmoji();                           
                                 } else {
                                     heartbutton.style.backgroundColor = 'white';
                                     heartbutton.style.border = 'white';
@@ -183,6 +185,7 @@ const getArticles = () => {
                                     firebutton.style.fontWeight = 'bolder';
                                     fireCount++;
                                     fireCounter.textContent = fireCount;
+                                    addEmoji();
                                 } else {
                                     firebutton.style.backgroundColor = 'white';
                                     firebutton.style.border = 'white';
@@ -317,10 +320,4 @@ const getArticles = () => {
                     //comments.push({comment: submitComment.comments.value, gifs: chosenGifs || []});
                     chosenGifs = [];
                 })
-
-
-
-
-
-
 

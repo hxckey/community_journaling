@@ -117,4 +117,21 @@ app.delete("/articles/delete/:id" , (req, res) => {
     }
 })
 
+//Update the emoji counters 
+app.put("/emojis/update/:id", (req,res) => {
+    try {
+        articles[req.params.id-1].emojis.like = req.body.emojis.like
+        articles[req.params.id-1].emojis.heart = req.body.emojis.heart
+        articles[req.params.id-1].emojis.fire = req.body.emojis.fire
+        res.status(200).json({
+            message: "Post emoji-ed"
+        })
+    } catch(err) {
+        res.status(500).json({
+                message: "Error: post could not be emoji-ed"
+        })
+        console.log(err);
+    }
+});
+
 module.exports = app;

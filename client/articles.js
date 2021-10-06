@@ -126,9 +126,7 @@ const getArticles = () => {
                             let likeCounter = document.getElementById(`likeCounter${item}`);
                             let heartCounter = document.getElementById(`heartCounter${item}`);
                             let fireCounter = document.getElementById(`fireCounter${item}`);
-                            
-                            window.addEventListener('load', () => {
-                            })
+                        
                             
                             likeCounter.textContent = likeCount;
                             heartCounter.textContent = heartCount;

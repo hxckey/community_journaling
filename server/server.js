@@ -107,7 +107,8 @@ app.delete("/articles/delete/:id" , (req, res) => {
         } else { 
         delete articles[req.params.id-1];
         res.status(204).json({
-            message: "Article deleted"
+            message: "Article deleted",
+            success: true
         })}
         // console.log(articles)
     } catch(err) {

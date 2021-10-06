@@ -12,15 +12,22 @@ const articles = [
         id: 1,
         title: "first article",
         entry: "slufgkejfdpihq", 
-        postComments: ['comment one', 'comment two', 'comment three'], 
-        gifs: ["gif1", "gif2"],
+        postComments: [
+            {comment: 'comment one', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+            {comment: 'comment two', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+            {comment: 'comment three', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']}
+        ], 
         emojis: {like: 1, heart: 2, fire: 3}
     }, 
     {
         id: 2,
         title: "second article",
         entry: "hello world", 
-        postComments: ['comment one', 'comment two', 'comment three'], 
+        postComments: [
+            {comment: 'comment four', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+            {comment: 'comment five', gifs: []},
+            {comment: 'comment six', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']}
+        ], 
         gifs: ["gif1", "gif2"],
         emojis: {like: 1, heart: 2, fire: 3}
     }

@@ -71,16 +71,107 @@ window.onclick = function(event) {
     }
 }
 
-const showModal = (item, title, entry) => {
+const getGiphy = async(query) => {
+    let gifs = [];
+    try {
+        let response =  await fetch(`http://localhost:5000/gifs/${query}`)
+        let jsonResponse = await response.json();
+        
+        for(result in jsonResponse.output.data){
+            gifs.push(jsonResponse.output.data[result].images.downsized.url);
+        } 
+        
+        return gifs;
+    } catch(error) {
+        console.error("There was an error handling your request: " + error.message);
+    } 
+};
+
+let chosenGifs = [];
+
+const commentDisplay = (item, comments) => {  
+    let viewComments = document.getElementById('viewComments');
+    let commentsList = document.getElementById('commentsList');
+    let searchGif = document.getElementById('searchGif');
+    let gifQuery = document.getElementById('gifSearchQuery');
+    let gifResults = document.getElementById('gifResults');
+    while(commentsList.firstChild){
+        commentsList.firstChild.remove();
+    }
+    searchGif.addEventListener('click', e => {
+        e.preventDefault();
+        while(gifResults.firstChild){
+            gifResults.firstChild.remove();
+        }
+        getGiphy(gifQuery.value).then(resultList => {
+            for(item of resultList){
+                let newGif = document.createElement('div');
+                newGif.innerHTML = `<button style="background: url('${item}')" value="${item}" type="button" class="gifResult" onclick="chosenGifs.push('${item}'); alert('GIF Added')">`;
+                gifResults.appendChild(newGif);
+                
+            }
+        })   
+    });
+
+    let clearGifs = document.getElementById('clearGifs');
+    clearGifs.addEventListener('click', e => {
+        while(gifResults.firstChild){
+            gifResults.firstChild.remove();
+        }
+    })
+
+    let removeGif = document.getElementById('removeGif');
+    removeGif.addEventListener('click', e => {
+        chosenGifs = [];
+        alert('Selected GIFs removed.');
+    });
+
+    viewComments.addEventListener('click', e => {
+        while(commentsList.firstChild){
+            commentsList.firstChild.remove();
+        }
+        for(commentText in comments){
+            let commentTitle = document.createElement('dt');
+            let commentDesc = document.createElement('dd');
+            commentTitle.textContent = 'Anonymous';
+            commentDesc.textContent = comments[commentText].comment;
+            if(comments[commentText].gifs){
+                for(gifItem in comments[commentText].gifs){
+                    console.log(gifItem)
+                    let commentGif = document.createElement('img');
+                    commentGif.src = comments[commentText].gifs[gifItem];
+                    commentsList.insertAdjacentElement('afterbegin', commentGif);
+                } 
+            }
+            commentsList.insertAdjacentElement('afterbegin', commentDesc);
+            commentsList.insertAdjacentElement('afterbegin', commentTitle);
+        }
+    });
+        
+    let submitComment = document.getElementById('commentsForm');
+    submitComment.addEventListener('submit', e => {
+        e.preventDefault();
+        alert('Comment Submitted');
+        //comments.push({comment: submitComment.comments.value, gifs: chosenGifs || []});
+        chosenGifs = [];
+    });
+}
+
+
+const showModal = (item, data) => {
     let seeMore = document.getElementById(`viewPost${item}`);
     seeMore.addEventListener('click', e => {
         let modalTitle = document.getElementById('modalTitle');
         let articleContent = document.getElementById('articleContent');
-        modalTitle.textContent = title;
-        articleContent.textContent = entry;   
+        modalTitle.textContent = data.title;
+        articleContent.textContent = data.entry;   
         viewModal.style.display = 'block';
+        let commentsData = data.postComments;
+        commentDisplay(item, commentsData);
     });
+    
 }
+
 // Functionality for New Post button
 const postBtn = document.getElementById('newPostButton')
 const newPost = document.getElementById('newPost');
@@ -91,10 +182,7 @@ const getArticles = () => {
     .then(response => response.json())
     // let ressies = response.json
     .then(data => {
-        console.log(data)
         articles.push(data)
-        console.log(articles);
-
         //display articles into boxes 
         for (item in data.results){
             let displayArticle = document.createElement('div')
@@ -116,8 +204,9 @@ const getArticles = () => {
                     </footer>
                 </div>`
             articleBody.append(displayArticle)
-         
-            showModal(item, data.results[item].title, data.results[item].entry);
+
+            showModal(item, data.results[item]);
+            
             // Functions
             //// Emoji counter
             //Selectors
@@ -139,184 +228,97 @@ const getArticles = () => {
             heartCounter.textContent = heartCount;
             fireCounter.textContent = fireCount;
                             
-                            // Like button
-                            likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
-                                if(likebutton.style.backgroundColor === 'white') {
-                                    likebutton.style.backgroundColor = 'rgb(41,114,250)';
-                                    likebutton.style.border = 'black';
-                                    likebutton.style.fontWeight = 'bolder';
-                                    likeCount ++;
-                                    likeCounter.textContent = likeCount;
-                                    console.log(likeCount)
-                                } else {
-                                    likebutton.style.backgroundColor = 'white';
-                                    likebutton.style.border = 'white';
-                                    likebutton.style.fontWeight = 'normal';
-                                    likeCount --;
-                                    likeCounter.textContent = likeCount
-                                    console.log(likeCount)
-                                }
-                            }));
+            // Like button
+            likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
+                if(likebutton.style.backgroundColor === 'white') {
+                    likebutton.style.backgroundColor = 'rgb(41,114,250)';
+                    likebutton.style.border = 'black';
+                    likebutton.style.fontWeight = 'bolder';
+                    likeCount ++;
+                    likeCounter.textContent = likeCount;
+                    console.log(likeCount)
+                } else {
+                    likebutton.style.backgroundColor = 'white';
+                    likebutton.style.border = 'white';
+                    likebutton.style.fontWeight = 'normal';
+                    likeCount --;
+                    likeCounter.textContent = likeCount
+                    console.log(likeCount)
+                }
+            }));
                             
-                            // Love button
-                            heartBtn.forEach(heartbutton => heartbutton.addEventListener('click', (e) => {
-                                if(heartbutton.style.backgroundColor === 'white') {
-                                    heartbutton.style.backgroundColor = 'rgb(211,105,116)';
-                                    heartbutton.style.border = 'black';
-                                    heartbutton.style.fontWeight = 'bolder';
-                                    heartCount++;
-                                    heartCounter.textContent = heartCount;
-                                } else {
-                                    heartbutton.style.backgroundColor = 'white';
-                                    heartbutton.style.border = 'white';
-                                    heartbutton.style.fontWeight = 'normal'
-                                    heartCount--;
-                                    heartCounter.textContent = heartCount
-                                }
-                            }));
+            // Love button
+            heartBtn.forEach(heartbutton => heartbutton.addEventListener('click', (e) => {
+                if(heartbutton.style.backgroundColor === 'white') {
+                    heartbutton.style.backgroundColor = 'rgb(211,105,116)';
+                    heartbutton.style.border = 'black';
+                    heartbutton.style.fontWeight = 'bolder';
+                    heartCount++;
+                    heartCounter.textContent = heartCount;
+                } else {
+                    heartbutton.style.backgroundColor = 'white';
+                    heartbutton.style.border = 'white';
+                    heartbutton.style.fontWeight = 'normal'
+                    heartCount--;
+                    heartCounter.textContent = heartCount
+                }
+            }));
+            
+            // Fire button
+            fireBtn.forEach(firebutton => firebutton.addEventListener('click', (e) => {
+                if(firebutton.style.backgroundColor === 'white') {
+                    firebutton.style.backgroundColor = 'rgb(250,182,51)';
+                    firebutton.style.border = 'black';
+                    firebutton.style.fontWeight = 'bolder';
+                    fireCount++;
+                    fireCounter.textContent = fireCount;
+                } else {
+                    firebutton.style.backgroundColor = 'white';
+                    firebutton.style.border = 'white';
+                    firebutton.style.fontWeight = 'normal'
+                    fireCount--;
+                    fireCounter.textContent = fireCount
+                }
+            }));
+        }
+                        
+    });
                             
-                            // Fire button
-                            fireBtn.forEach(firebutton => firebutton.addEventListener('click', (e) => {
-                                if(firebutton.style.backgroundColor === 'white') {
-                                    firebutton.style.backgroundColor = 'rgb(250,182,51)';
-                                    firebutton.style.border = 'black';
-                                    firebutton.style.fontWeight = 'bolder';
-                                    fireCount++;
-                                    fireCounter.textContent = fireCount;
-                                } else {
-                                    firebutton.style.backgroundColor = 'white';
-                                    firebutton.style.border = 'white';
-                                    firebutton.style.fontWeight = 'normal'
-                                    fireCount--;
-                                    fireCounter.textContent = fireCount
-                                }
-                            }));
-                        }
-                        
-                    });
-                            
-                        };
+};
                         
                         
                         
                         
                         
-            // change listener to be a display artidcles
-            let inputBox = document.getElementById('postInputBox');
-            let submitBtn = document.getElementById('postBtn');
-            window.addEventListener('load', e => {
-                e.preventDefault();
-                let results = [];
-                getArticles()
-            })
-            
-            function closePostModal() {
-                newPost.style.display = 'none';
-            }
-            
-            function openPostModal() {
-                newPost.style.display = 'block';
-            }
-            
-            function outsidePostClick(e) {
-                if(e.target == newPost){
-                    newPost.style.display = 'none';
-                }
-            }
-            
-            // Listens for clicks
-            postBtn.addEventListener('click', openPostModal);
-            closePostBtn.addEventListener('click', closePostModal);
-            window.addEventListener('click', outsidePostClick);
-            
-            const getGiphy = async(query) => {
-                let gifs = [];
-                try {
-                    let response =  await fetch(`http://localhost:5000/gifs/${query}`)
-                    let jsonResponse = await response.json();
-                    
-                    for(result in jsonResponse.output.data){
-                        gifs.push(jsonResponse.output.data[result].images.downsized.url);
-                    } 
-                    
-                    return gifs;
-                } catch(error) {
-                    console.error("There was an error handling your request: " + error.message);
-                } 
-            };
-            
-            let chosenGifs = [];
-            
-            let searchGif = document.getElementById('searchGif');
-            let gifQuery = document.getElementById('gifSearchQuery');
-            let gifResults = document.getElementById('gifResults');
-            searchGif.addEventListener('click', e => {
-                e.preventDefault();
-                while(gifResults.firstChild){
-                    gifResults.firstChild.remove();
-                }
-                getGiphy(gifQuery.value).then(resultList => {
-                    for(item of resultList){
-                        let newGif = document.createElement('div');
-                        newGif.innerHTML = `<button style="background: url('${item}')" value="${item}" type="button" class="gifResult" onclick="chosenGifs.push('${item}')">`;
-                        gifResults.appendChild(newGif);
-                        
-                    }
-                })   
-            });
-            
-            let clearGifs = document.getElementById('clearGifs');
-            clearGifs.addEventListener('click', e => {
-                while(gifResults.firstChild){
-                    gifResults.firstChild.remove();
-                }
-            })
-            
-            let removeGif = document.getElementById('removeGif');
-            removeGif.addEventListener('click', e => {
-                chosenGifs = [];
-                alert('Selected GIFs removed.');
-            });
-            
-            /* let comments = [
-                {comment:'Very good', gifs: ['https://media.giphy.com/media/Ju7l5y9osyymQ/giphy.gif']}, 
-                {comment:'Great post', gifs: []}, 
-                {comment:'I agree', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
-                {comment:`This is the best thing I've ever read`, gifs: []},
-                {comment:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', gifs: []}
-            ]
-             */
-            
-            let viewComments = document.getElementById('viewComments');
-            let commentsList = document.getElementById('commentsList');
-            viewComments.addEventListener('click', e => {
-                while(commentsList.firstChild){
-                    commentsList.firstChild.remove();
-                }
-                for(comment of data.results[item].postComments){
-                    let commentTitle = document.createElement('dt');
-                    let commentDesc = document.createElement('dd');
-                    commentTitle.textContent = 'Anonymous';
-                    commentDesc.textContent = data.results[item].postComments[comment];
-                    if(comments[comment].gifs){
-                        for(gifItem in data.results[item].gifs){
-                            let commentGif = document.createElement('img');
-                            commentGif.src = data.results[item].gifs.gifs[gifItem];
-                            commentsList.insertAdjacentElement('afterbegin', commentGif);
-                        } 
-                    }
-                    commentsList.insertAdjacentElement('afterbegin', commentDesc);
-                    commentsList.insertAdjacentElement('afterbegin', commentTitle);
-                }
-            });
-                
-                let submitComment = document.getElementById('commentsForm');
-                submitComment.addEventListener('submit', e => {
-                    e.preventDefault();
-                    alert('Comment Submitted');
-                    //comments.push({comment: submitComment.comments.value, gifs: chosenGifs || []});
-                    chosenGifs = [];
-                })
+// change listener to be a display artidcles
+let inputBox = document.getElementById('postInputBox');
+let submitBtn = document.getElementById('postBtn');
+window.addEventListener('load', e => {
+    e.preventDefault();
+    let results = [];
+    getArticles()
+})
+
+function closePostModal() {
+    newPost.style.display = 'none';
+}
+
+function openPostModal() {
+    newPost.style.display = 'block';
+}
+
+function outsidePostClick(e) {
+    if(e.target == newPost){
+        newPost.style.display = 'none';
+    }
+}
+
+// Listens for clicks
+postBtn.addEventListener('click', openPostModal);
+closePostBtn.addEventListener('click', closePostModal);
+window.addEventListener('click', outsidePostClick);
+
+
 
 
 

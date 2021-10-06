@@ -10,6 +10,7 @@ app.use(express.json());
 const articles = [
     {
         id: 1,
+        title: "first article",
         entry: "slufgkejfdpihq", 
         postComments: ['comment one', 'comment two', 'comment three'], 
         gifs: ["gif1", "gif2"],
@@ -17,6 +18,7 @@ const articles = [
     }, 
     {
         id: 2,
+        title: "second article",
         entry: "hello world", 
         postComments: ['comment one', 'comment two', 'comment three'], 
         gifs: ["gif1", "gif2"],
@@ -64,7 +66,9 @@ app.get("/gifs/:query", async (req, res) => {
 // posts a new article
 app.post("/entry", (req, res) => {
     try {
-        let newEntry =  { id: articles.length+1, entry: req.body.entry,
+        let newEntry =  { id: articles.length+1, 
+        title: req.body.title,
+        entry: req.body.entry,
         postComments: req.body.postComments, 
         gifs: req.body.gifs,
         emojis: req.body.emojis };

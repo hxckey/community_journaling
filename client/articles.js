@@ -136,6 +136,7 @@ let comments = [
     {comment:'I agree', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
     {comment:`This is the best thing I've ever read`, gifs: []},
     {comment:'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', gifs: []}
+]
 
 const getArticles = () => {
     let articles = [];
@@ -162,7 +163,6 @@ submitBtn.addEventListener('click', e => {
     // console.log(results)
 })
 
-];
 let viewComments = document.getElementById('viewComments');
 let commentsList = document.getElementById('commentsList');
 viewComments.addEventListener('click', e => {

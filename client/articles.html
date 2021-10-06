@@ -24,10 +24,11 @@
                         <h4>Write your post below</h4>
                     </header>      
                     <body class="modalBody">                            
-                        <form method="POST" action="https://localhost:5000/entry" id='postFooter'>
-                            <textarea name="postInputBox" id="postInputBox" rows="15" autofocus required maxlength="2000" placeholder="Enter text here, 2000 character limit"></textarea>
-                            <button disabled id='gifBtn' class='ourBtn'>Add a Gif</button>
-                            <input id='postBtn' type="submit" value="Post your article!" formmethod="POST">
+                        <form method="POST"  id='postFooter'>
+                            <textarea name="titleInput" id="titleInput" rows="2" required maxlength="100" placeholder="Enter the title of your article here"></textarea>
+                            <textarea name="postInputBox" id="postInputBox" rows="15" autofocus required maxlength="2000" placeholder="Write your post here, 2000 character limit"></textarea>
+                            <!-- <button disabled id='gifBtn' class='ourBtn'>Add a Gif</button> -->
+                            <input id='postBtn' type="submit" value="submit" formmethod="POST">
                         </form>                        
                     </body>           
                 </div>

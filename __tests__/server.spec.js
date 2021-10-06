@@ -1,4 +1,3 @@
-// const { TestWatcher } = require("@jest/core");
 const superT = require('supertest')
 const app = require('community_journaling/server/server.js')
 
@@ -47,6 +46,13 @@ describe('API routes', () => {
         .post("/newcomment")
         .expect(201)
         .expect('Comment posted')
+    })
+
+    test('test delete path for articles', () => {
+        return superT(api)
+        .delete("/articles/delete/1")
+        .expect(204)
+        .expect("Article deleted")
     })
 
 });

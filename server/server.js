@@ -105,14 +105,32 @@ app.delete("/articles/delete/:id" , (req, res) => {
         if(req.params.id > articles.length || req.params.id < 0){
             res.send('Please enter a number greater than 0.');
         } else { 
-        delete articles[0].entry;
+        delete articles[req.params.id-1];
         res.status(204).json({
             message: "Article deleted"
         })}
-        console.log(articles)
+        // console.log(articles)
     } catch(err) {
         res.status(500).json({
             message: "Error: article could not be deleted."
+        })
+    }
+});
+
+app.put("/articles/update/:id" , (req, res) => {
+    try {
+        if(req.params.id > articles.length || req.params.id < 0){
+            res.send('Please enter a number greater than 0.');
+        } else {
+            articles[req.params.id-1].entry = req.body.entry;
+            articles[req.params.id-1].title = req.body.title;
+            res.status(200).json({
+                message: "Your post has been updated"
+            })
+        }
+    } catch(err) {
+        res.send(500).json({
+            message: "Your post could not be updated"
         })
     }
 })

@@ -208,3 +208,12 @@
 #formBtnContainer > button > img {
     margin-left: 10px;
 }
+
+#titleInput {
+    display: block;
+    height: 20px;
+}
+
+#postInputBox {
+    display: block;
+}

@@ -1,3 +1,5 @@
+// const e = require("express");
+
 //// Navbar JS
 window.onscroll = () => windowScroll();
 
@@ -318,7 +320,34 @@ const getArticles = () => {
                     chosenGifs = [];
                 })
 
+let articleInput = document.getElementById('postInputBox')
+let articleSubmit = document.getElementById('postBtn')
+let titleInput = document.getElementById('titleInput')
+let articleForm = document.getElementById('postFooter')
+let newEntry = articleInput.value
 
+const postArticle = async (newEntry) => {
+    // e.preventDefault();
+    try {
+        await fetch('http://localhost:5000/entry', {
+            method: "POST",
+            body: JSON.stringify({entry: articleInput.value, title: titleInput.value}),
+            headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+        console.log(articleInput.value)
+    } catch(err) {
+        console.log("Error: " + err)
+    }
+}
+
+articleForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    postArticle(articleInput.value)
+    articleForm.reset();
+    window.alert('Your post has been submitted')
+    closePostModal();
+    location.reload();
+});
 
 
 

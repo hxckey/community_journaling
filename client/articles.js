@@ -78,7 +78,6 @@ const addEmoji = async (likeCount, heartCount, fireCount) => {
     }
 }
 
-const showModal = (item, title, entry) => {
 const getGiphy = async(query) => {
     let gifs = [];
     try {

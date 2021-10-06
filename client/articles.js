@@ -89,12 +89,27 @@ const getGiphy = async(query) => {
 
 let chosenGifs = [];
 
+const postComments = async (newComment, newGifs, item) => {
+    console.log('nc ' + newComment + ' ng ' + newGifs + ' item ' + item)
+    try {
+        await fetch(`http://localhost:5000/newcomment/${item}`, {
+        method: "POST",
+        body: JSON.stringify({comment: newComment, gifs: newGifs}),
+        headers: {"Content-type": "application/json; charset=UTF-8"}
+        })
+    } catch(err) {
+        console.log(err);
+    }
+}
+
 const commentDisplay = (item, comments) => {  
     let viewComments = document.getElementById('viewComments');
     let commentsList = document.getElementById('commentsList');
     let searchGif = document.getElementById('searchGif');
     let gifQuery = document.getElementById('gifSearchQuery');
     let gifResults = document.getElementById('gifResults');
+    let submitComment = document.getElementById('commentsForm');
+
     while(commentsList.firstChild){
         commentsList.firstChild.remove();
     }
@@ -130,39 +145,52 @@ const commentDisplay = (item, comments) => {
         while(commentsList.firstChild){
             commentsList.firstChild.remove();
         }
-        for(commentText in comments){
-            let commentTitle = document.createElement('dt');
-            let commentDesc = document.createElement('dd');
-            commentTitle.textContent = 'Anonymous';
-            commentDesc.textContent = comments[commentText].comment;
-            if(comments[commentText].gifs){
-                for(gifItem in comments[commentText].gifs){
-                    console.log(gifItem)
-                    let commentGif = document.createElement('img');
-                    commentGif.src = comments[commentText].gifs[gifItem];
-                    commentsList.insertAdjacentElement('afterbegin', commentGif);
-                } 
-            }
-            commentsList.insertAdjacentElement('afterbegin', commentDesc);
-            commentsList.insertAdjacentElement('afterbegin', commentTitle);
-        }
+        fetch('http://localhost:5000/articles')
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                let commentList = [];
+                for(resultObj of data.results[item].postComments){
+                    commentList.push({comment: resultObj.comment, gifs: resultObj.gifs})
+                }
+                //commentList.push(data.results[item].postComments)
+                for(commentText of commentList){
+                    let commentTitle = document.createElement('dt');
+                    let commentDesc = document.createElement('dd');
+                    commentTitle.textContent = 'Anonymous';
+                    console.log(commentText)
+                    commentDesc.textContent = commentText.comment;
+                    if(commentText.gifs){
+                        for(gifItem in commentText.gifs){
+                            console.log(gifItem)
+                            let commentGif = document.createElement('img');
+                            commentGif.src = commentText.gifs[gifItem];
+                            commentsList.insertAdjacentElement('afterbegin', commentGif);
+                        } 
+                    }
+                    commentsList.insertAdjacentElement('afterbegin', commentDesc);
+                    commentsList.insertAdjacentElement('afterbegin', commentTitle);
+                }
+            });
     });
         
-    let submitComment = document.getElementById('commentsForm');
     submitComment.addEventListener('submit', e => {
         e.preventDefault();
-        alert('Comment Submitted');
-        //comments.push({comment: submitComment.comments.value, gifs: chosenGifs || []});
-        chosenGifs = [];
+        try {
+            postComments(submitComment.comments.value, chosenGifs || [], item);
+            alert('Comment Submitted');
+            chosenGifs = [];
+            submitComment.reset();
+        } catch(err) {
+            console.log(err);
+        }
     });
 }
-
 
 const showModal = (item, data) => {
     let seeMore = document.getElementById(`viewPost${item}`);
     seeMore.addEventListener('click', e => {
         let modalTitle = document.getElementById('modalTitle');
-        let articleContent = document.getElementById('articleContent');
         modalTitle.textContent = data.title;
         articleContent.textContent = data.entry;   
         viewModal.style.display = 'block';
@@ -203,7 +231,7 @@ const getArticles = () => {
                         </div>
                     </footer>
                 </div>`
-            articleBody.append(displayArticle)
+            articleBody.append(displayArticle);
 
             showModal(item, data.results[item]);
             

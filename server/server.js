@@ -91,10 +91,11 @@ app.post("/entry", (req, res) => {
 });
 
 // posts a new comment and attaches it to the article
-app.post("/newcomment", (req, res) => {
+app.post("/newcomment/:id", (req, res) => {
     try{
-        let newComment = req.body.postComments;
-        articles[req.body.index].postComments.push(newComment);
+        let newComment = req.body.comment;
+        let newGifs = req.body.gifs;
+        articles[req.params.id].postComments.push({comment: newComment, gifs: newGifs});
         res.status(201).json({
             message: "Comment posted"
         });
@@ -113,7 +114,8 @@ app.delete("/articles/delete/:id" , (req, res) => {
             res.send('Please enter a number greater than 0.');
         } else { 
         delete articles[0].entry;
-        res.status(204).json({
+        res.status(200).json({
+            success: true,
             message: "Article deleted"
         })}
         console.log(articles)

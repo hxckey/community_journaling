@@ -89,23 +89,23 @@ const getArticles = () => {
         for (item in data.results){
             let displayArticle = document.createElement('div')
             let articleBody = document.getElementById('article-body')
-            displayArticle.innerHTML= `<div class="card" id="box1">
-            <header>Article Title 1</header>
-            <p>${data.results[item].entry}</p>
-                <button class = "readBtn ourBtn" href="#item1">Read all</button>
-            <footer>
-                <button class="commentBtn ourBtn" href='#comment1'>Comments</button>
-                    <p>Likes: <span id='likeCounter${item}'></span></p>
-                    <p>Loves: <span id='heartCounter${item}'></span></p>
-                    <p>Fire: <span id="fireCounter${item}"></span></p>            
-                <div id="formBtnContainer" class="btn-group u-pull-right">
-                    <button class="btn likeEmoji" style="background-color: white;">Like<img src="./assets/like.png"></button>
-                    <button class="btn heartEmoji" style="background-color: white;">Heart<img src="./assets/heart.png"></button>
-                    <button class="btn fireEmoji" style="background-color: white;">Fire<img src="./assets/fire.png"></button>
-                </div>
-            </footer>
-            </div>
-                            `
+            displayArticle.innerHTML= 
+                `<div class="card" id="box1">
+                    <header>Article Title 1</header>
+                    <p>${data.results[item].entry}</p>
+                    <button class = "readBtn ourBtn" href="#item1">Read all</button>
+                    <footer>
+                        <button class="commentBtn ourBtn" href='#comment1'>Comments</button>
+                        <p>Likes: <span id='likeCounter${item}'></span></p>
+                        <p>Loves: <span id='heartCounter${item}'></span></p>
+                        <p>Fire: <span id="fireCounter${item}"></span></p>            
+                        <div id="formBtnContainer" class="btn-group u-pull-right">
+                            <button class="btn likeEmoji" style="background-color: white;">Like<img src="./assets/like.png"></button>
+                            <button class="btn heartEmoji" style="background-color: white;">Heart<img src="./assets/heart.png"></button>
+                            <button class="btn fireEmoji" style="background-color: white;">Fire<img src="./assets/fire.png"></button>
+                        </div>
+                    </footer>
+                </div>`
                             articleBody.append(displayArticle)
                             
                             

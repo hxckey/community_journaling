@@ -1,4 +1,4 @@
-const { TestWatcher } = require("@jest/core");
+// const { TestWatcher } = require("@jest/core");
 const superT = require('supertest')
 const app = require('community_journaling/server/server.js')
 

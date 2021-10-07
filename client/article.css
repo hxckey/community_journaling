@@ -207,12 +207,10 @@
 }
 
 .commentBtn:hover{
-    font-size: 1.1em;
     cursor: pointer;
 }
 
 .commentBtn:active{
-    font-size: 1.1em;
     color: purple;
     cursor: pointer;
 }

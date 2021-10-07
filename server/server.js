@@ -46,7 +46,9 @@ app.get("/articles", (req, res) => res.json({results: articles}));
 //returns an article by id 
 app.get("/articles/:id", (req, res) => {
     if(req.params.id > articles.length || req.params.id < 0){
-    res.send('Please enter a number greater than 0.');
+        res.status(404).json({
+            message : 'Please enter a number greater than 0.'
+        });
   } else {
     res.send(articles[req.params.id-1]);
 }});
@@ -112,9 +114,10 @@ app.post("/newcomment/:id", (req, res) => {
 app.delete("/articles/delete/:id" , (req, res) => {
     try {
         if(req.params.id > articles.length || req.params.id < 0){
-            res.send('Please enter a number greater than 0.');
+            res.status(404).json({
+                message : 'Please enter a number greater than 0.'
+            })        
         } else { 
-
         delete articles[req.params.id-1];
         res.status(200).json({
             message: "Article deleted",
@@ -131,8 +134,9 @@ app.delete("/articles/delete/:id" , (req, res) => {
 app.put("/articles/update/:id" , (req, res) => {
     try {
         if(req.params.id > articles.length || req.params.id < 0){
-            res.send('Please enter a number greater than 0.');
-            res.status(404);      
+            res.status(404).json({
+                message : 'Please enter a number greater than 0.'
+            })                 
         } else {            
             articles[req.params.id-1].entry = req.body.entry;
             articles[req.params.id-1].title = req.body.title;

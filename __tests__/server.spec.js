@@ -35,6 +35,15 @@ describe('API routes', () => {
         .expect(200)
     })
 
+    test("test specific article wrong index path", () => {
+        return superT(api)
+        .get("/articles/-1")
+        .expect(404)
+        .expect({
+            message: 'Please enter a number greater than 0.'
+        })
+    })
+
     test('test gifs query path', () => {
         return superT(api)
         .get('/gifs/dog')
@@ -65,6 +74,15 @@ describe('API routes', () => {
         })
     })
 
+    test('test article delete wrong index path', () => {
+        return superT(api)
+        .delete("/articles/delete/-1")
+        .expect(404)
+        .expect({
+            message: 'Please enter a number greater than 0.'
+        })
+    })
+
     test('test article update path', () => {
         return superT(api)
         .put("/articles/update/2")
@@ -73,7 +91,16 @@ describe('API routes', () => {
             message: "Your post has been updated"
         })
     })
-    
+
+    test('test article update wrong index path', () => {
+        return superT(api)
+        .put("/articles/update/-1")
+        .expect(404)
+        .expect({
+            message: 'Please enter a number greater than 0.'
+        })
+    })
+       
     test('test emoji update path', () => {
         return superT(api)
         .put("/emojis/update/1")
@@ -92,4 +119,11 @@ describe('API routes', () => {
         })
     })
 
+    test('test errors', () => {
+        return superT(api)
+        .put("/error")
+        .expect(404)
+    })
+
 });
+

@@ -167,7 +167,7 @@ let resultId;
 let resultVal;
 
 // Functionality for New Post button
-const postBtn = document.getElementById('newPostButton')
+let postBtn = document.getElementById('newPostButton')
 const newPost = document.getElementById('newPost');
 const closePost = document.getElementById('closepostBtn')
 const getArticles = () => {

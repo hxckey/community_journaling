@@ -1,4 +1,5 @@
-# LAP 1 Portfolio Week Project
+# LAP 1 Portfolio Week Project 
+## Community Journaling: StreetHub
 
 ## Installation & Usage
 

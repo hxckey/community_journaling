@@ -166,7 +166,10 @@ const showModal = (data) => {
 let resultVal;
 
 // Functionality for New Post button
+
 const postButton = document.getElementById('newPostButton')
+
+
 const newPost = document.getElementById('newPost');
 const closePost = document.getElementById('closepostBtn')
 const getArticles = () => {

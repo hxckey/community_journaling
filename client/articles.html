@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreetHub - Articles</title>    
+    <title>StreetHub - Articles</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cirrus-ui@0.6.0/dist/cirrus.min.css">
     <link rel="icon" href="assets/updated logo/logo_small_icon_only_inverted.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,7 +29,7 @@
                     <body class="modalBody">                            
                         <form method="POST"  id='postFooter'>
                             <textarea name="titleInput" id="titleInput" rows="2" required maxlength="100" placeholder="Enter the title of your article here"></textarea>
-                            <textarea name="postInputBox" id="postInputBox" rows="15" autofocus required maxlength="1000" placeholder="Write your post here, 1000 character limit"></textarea>
+                            <textarea name="postInputBox" id="postInputBox" rows="15" autofocus required maxlength="2000" placeholder="Write your post here, 2000 character limit"></textarea>
                             <!-- <button disabled id='gifBtn' class='ourBtn'>Add a Gif</button> -->
                             <input id='postBtn' type="submit" value="submit" formmethod="POST">
                         </form>                        
@@ -77,20 +77,21 @@
                    
                     <div class="col-4">
                         <ul class="no-bullets">
-                            <a href="index.html">
+                            <a href="index.html" class="ourFooterBtn" id="homepageButton">
                                 <li class="footer__list-item">About</li>
                             </a>
-                            <a href="conduct.html">
+                            <a href="conduct.html" class="ourFooterBtn">
                                 <li class="footer__list-item">Code of Conduct</li>
                             </a>
-                            <a href="articles.html">
-                                <li class="footer__list-item">Posts</li>
+
+                            <a href="articles.html" class="ourFooterBtn">
+                                <li class="footer__list-item">Articles</li>
+
                             </a>
                             <ul>
                             </ul>
                         </ul>
                     </div>
-                   
                 </div>
             </div>
     </footer>

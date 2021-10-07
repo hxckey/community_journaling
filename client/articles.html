@@ -19,7 +19,7 @@
     <header>
         <nav>        
            <a href="index.html"><img id="navLogo" src="./assets/updated logo/logo_small.png"></a>
-            <button id="newPostButton" href='#newPost'>New post</button>
+            <button id="newPostButton" href='#newPost' type="button">New post</button>
             <div class = "postModal" id="newPost">
                 <div class = "modalContent">
                     <header class="modalHeader">
@@ -37,9 +37,9 @@
                 </div>
         </nav>
     </header> 
-
-    <h2 id="title">Articles</h2>
-    
+    <section>
+        <h2 id="title">Posts</h2>
+    </section>
     <main id = "article-body">     
         <div class="ourModal" id='viewModal'>
             <div class="modalContent">
@@ -49,7 +49,7 @@
                 <section class="modalBody">
                     <h2 id="modalTitle"></h2>
                     <p id="articleContent"></p>
-                    <p>Comments section</p>
+                    <p id="leaveComment">Leave a Comment:</p>
                     <form id="commentsForm">
                         <textarea name="comments"></textarea>
                         <input id="gifSearchQuery" type="text" placeholder="Search for a GIF"/>
@@ -61,7 +61,7 @@
                     </form>
                 </section>   
                 <footer class="modalFooter">
-                    <h3>Please read our Code of Conduct before posting</h3>
+                    <h3>Please read our <a class='conductlink' href="conduct.html">Code of Conduct </a>before posting</h3>
                 </footer> 
             </div>
         </div>
@@ -83,8 +83,10 @@
                             <a href="conduct.html" class="ourFooterBtn">
                                 <li class="footer__list-item">Code of Conduct</li>
                             </a>
+
                             <a href="articles.html" class="ourFooterBtn">
                                 <li class="footer__list-item">Articles</li>
+
                             </a>
                             <ul>
                             </ul>

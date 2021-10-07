@@ -5,11 +5,6 @@ getStartedButton.addEventListener('click', e => {
     window.location.href = 'articles.html';
 });
 
-/* conductButton.addEventListener('click', e => {
-    window.location.href = 'conduct.html';
-});
- */
-
 window.onscroll = () => windowScroll();
 
 const windowScroll = () => {

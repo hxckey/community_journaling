@@ -163,18 +163,19 @@ const showModal = (data) => {
     });
 }
 
-let resultId;
 let resultVal;
 
 // Functionality for New Post button
-let postBtn = document.getElementById('newPostButton')
+
+const postButton = document.getElementById('newPostButton')
+
+
 const newPost = document.getElementById('newPost');
 const closePost = document.getElementById('closepostBtn')
 const getArticles = () => {
     let articles = [];
     fetch('http://localhost:5000/articles')
     .then(response => response.json())
-    // let ressies = response.json
     .then(data => {
         articles.push(data)
         //display articles into boxes 
@@ -191,8 +192,8 @@ const getArticles = () => {
 
                 `<div class="card" id="box1">
                     <header><h3>${data.results[item].title}</h3></header>
-                    <p class="articleContent">${data.results[item].entry.substring(0,100)+'...'}</p>
-                    <a class="commentBtn" id="viewPost${item}" data-value="${item}">See more</a>
+                    <p class="articleContent">${data.results[item].entry}</p>
+                    <button class="commentBtn btn-link" id="viewPost${item}" data-value="${item}">Leave Comment</button>
                     <button id="commentsShow${item}" class="btn-info mt-2 showComments" type="button">Show ${data.results[item].postComments.length} Comments</button>
                     <button id="commentsHide${item}" class="btn-primary mt-2 hideComments" type="button">Hide Comments</button>
                     <dl id="commentsList${item}"></dl>
@@ -214,7 +215,7 @@ const getArticles = () => {
             
             commentsList.style.display = "none";
             hideComments.style.display = "none";
-            viewComments.style.display = "block";
+            viewComments.style.display = "inline";
 
             for(commentText of foundComments){
                 let commentTitle = document.createElement('dt');
@@ -230,38 +231,20 @@ const getArticles = () => {
                 }
                 commentsList.insertAdjacentElement('afterbegin', commentDesc);
                 commentsList.insertAdjacentElement('afterbegin', commentTitle);
+                commentTitle.style.borderTop = "2px solid purple"
             }
 
             viewComments.addEventListener('click', e => {
                 commentsList.style.display = "block";
-                hideComments.style.display = "block";
+                hideComments.style.display = "inline";
                 viewComments.style.display = "none"
             });
 
             hideComments.addEventListener('click', e => {
                 commentsList.style.display = "none";
                 hideComments.style.display = "none";
-                viewComments.style.display = "block";
+                viewComments.style.display = "inline";
             });
-            
-            /* for(commentText of foundComments){
-                let commentTitle = document.createElement('dt');
-                let commentDesc = document.createElement('dd');
-                commentTitle.textContent = 'Anonymous';
-                console.log(commentText.comment)
-                commentDesc.textContent = commentText.comment;
-                if(commentText.gifs){
-                    for(gifItem in commentText.gifs){
-                        console.log(gifItem)
-                        let commentGif = document.createElement('img');
-                        commentGif.src = commentText.gifs[gifItem];
-                        commentsList.insertAdjacentElement('afterbegin', commentGif);
-                    } 
-                }
-                commentsList.insertAdjacentElement('afterbegin', commentDesc);
-                commentsList.insertAdjacentElement('afterbegin', commentTitle);
-            } */
-
             
             resultVal = data.results[item];
             showModal(resultVal);  
@@ -378,7 +361,7 @@ function outsidePostClick(e) {
 }
 
 // Listens for clicks
-postBtn.addEventListener('click', openPostModal);
+postButton.addEventListener('click', openPostModal);
 closePostBtn.addEventListener('click', closePostModal);
 window.addEventListener('click', outsidePostClick);
 
@@ -412,3 +395,5 @@ articleForm.addEventListener('submit', (e) => {
     closePostModal();
     location.reload();
 });
+
+//module.exports = { openPostModal }

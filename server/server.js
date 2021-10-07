@@ -17,7 +17,7 @@ const articles = [
             {comment: 'comment two', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
             {comment: 'comment three', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']}
         ], 
-        emojis: {like: 1, heart: 2, fire: 3}
+        emojis: {like: 0, heart: 0, fire: 0}
     }, 
     {
         id: 2,
@@ -147,19 +147,39 @@ app.put("/articles/update/:id" , (req, res) => {
 
 //Update the emoji counters 
 app.put("/emojis/update/:id", (req,res) => {
-    try {
-        articles[req.params.id-1].emojis.like = req.body.emojis.like
-        articles[req.params.id-1].emojis.heart = req.body.emojis.heart
-        articles[req.params.id-1].emojis.fire = req.body.emojis.fire
+    // try {
+        articles[req.params.id].emojis.like = req.body.like;
+        articles[req.params.id].emojis.heart = req.body.heart;
+        articles[req.params.id].emojis.fire = req.body.fire;        
         res.status(200).json({
             message: "Post emoji-ed"
         })
+//     } catch(err) {
+//         res.status(500).json({
+//                 message: "Error: post could not be emoji-ed"
+//         })
+//         console.log(err);
+//     }
+});
+
+
+//GET request for the emoji count
+app.get("/emojis/:id", (req,res) => {
+    try {
+        res.json({
+            likes: articles[req.params.id].emojis.like,
+            hearts: articles[req.params.id].emojis.heart,
+            fire: articles[req.params.id].emojis.fire
+        });        
+        res.status(200).json({
+            message: "Emoji count got"
+        })
     } catch(err) {
         res.status(500).json({
-                message: "Error: post could not be emoji-ed"
+            message: "Error: emoji count could not be got"
         })
-        console.log(err);
+        console.log(err)
     }
-});
+})
 
 module.exports = app;

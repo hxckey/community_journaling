@@ -64,20 +64,6 @@ window.onclick = function(event) {
     }
 }
 
-
-
-const addEmoji = async (likeCount, heartCount, fireCount) => {
-    try {
-        await fetch('http://localhost:5000/emojis/update/:id', {
-            method: "PUT",
-            body: JSON.stringify({like: likeCount, heart: heartCount, fire: fireCount}),
-            headers: {"Content-type": "application/json; charset=UTF-8"}
-        })
-    } catch(err) {
-        console.log("Error: " + err)
-    }
-}
-
 const getGiphy = async(query) => {
     let gifs = [];
     try {
@@ -130,14 +116,14 @@ const commentDisplay = (commentsIdVal, comments) => {
             }
         })   
     });
-
+    
     let clearGifs = document.getElementById('clearGifs');
     clearGifs.addEventListener('click', e => {
         while(gifResults.firstChild){
             gifResults.firstChild.remove();
         }
     })
-
+    
     let removeGif = document.getElementById('removeGif');
     removeGif.addEventListener('click', e => {
         chosenGifs = [];
@@ -152,6 +138,7 @@ const commentDisplay = (commentsIdVal, comments) => {
                 for(resultObj of data.results[indexVal].postComments){
                     commentList.push({comment: resultObj.comment, gifs: resultObj.gifs})
                 }
+
             }
         )
         return commentList;
@@ -183,10 +170,10 @@ const commentDisplay = (commentsIdVal, comments) => {
     submitComment.addEventListener('submit', e => {
         e.preventDefault();
         try {
-            postComments(submitComment.comments.value, chosenGifs || [], item);
+            postComments(submitComment.comments.value, chosenGifs || [], commentsIdVal);
             alert('Comment Submitted');
             chosenGifs = [];
-            submitComment.reset();
+            location.reload();
         } catch(err) {
             console.log(err);
         }
@@ -204,11 +191,11 @@ const showModal = (data) => {
         let commentsId = seeMore.getAttribute('data-value');
         commentDisplay(commentsId, commentsData);
     });
-    
 }
 
 let resultId;
 let resultVal;
+
 // Functionality for New Post button
 const postBtn = document.getElementById('newPostButton')
 const newPost = document.getElementById('newPost');
@@ -222,9 +209,15 @@ const getArticles = () => {
         articles.push(data)
         //display articles into boxes 
         for (item in data.results){
+            
+            let likeCount = data.results[item].emojis.like;
+            let heartCount = data.results[item].emojis.heart;
+            let fireCount = data.results[item].emojis.fire;        
+
             let displayArticle = document.createElement('div')
             let articleBody = document.getElementById('article-body')
             displayArticle.innerHTML= 
+
                 `<div class="card" id="box1">
                     <header>${data.results[item].title}</header>
                     <p>${data.results[item].entry}</p>
@@ -237,9 +230,9 @@ const getArticles = () => {
                         <p></p>
                         <p></p>            
                         <div id="formBtnContainer" class="btn-group u-pull-right">
-                            <button class="btn likeEmoji" style="background-color: white;">Likes: <span id='likeCounter${item}'></span><img src="./assets/like.png"></button>
-                            <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}'><img src="./assets/heart.png"></button>
-                            <button class="btn fireEmoji" style="background-color: white;">Fire: <span id="fireCounter${item}"></span><img src="./assets/fire.png"></button>
+                        <button class="btn likeEmoji" style="background-color: white;">Likes: <span id='likeCounter${item}' data-value="${item}">${likeCount}</span><img src="./assets/like.png"></button>
+                        <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}' data-value="${item}">${heartCount}<img src="./assets/heart.png"></button>
+                        <button class="btn fireEmoji" style="background-color: white;">Fire: <span id="fireCounter${item}" data-value="${item}">${fireCount}</span><img src="./assets/fire.png"></button>
                         </div>
                     </footer>
                 </div>`
@@ -274,24 +267,17 @@ const getArticles = () => {
             
             // Functions
             //// Emoji counter
+                
             //Selectors
             const likeBtn = displayArticle.querySelectorAll('.likeEmoji');
             const heartBtn = displayArticle.querySelectorAll('.heartEmoji');
-            const fireBtn = displayArticle.querySelectorAll('.fireEmoji');
-                            
-            // Sets the counters intialy to zero and adds them to the html
-            let likeCount = 0;
-            let heartCount = 0;
-            let fireCount = 0;
-                            
+            const fireBtn = displayArticle.querySelectorAll('.fireEmoji');                                       
+                      
+
             let likeCounter = document.getElementById(`likeCounter${item}`);
             let heartCounter = document.getElementById(`heartCounter${item}`);
             let fireCounter = document.getElementById(`fireCounter${item}`);
-                                                    
-            likeCounter.textContent = likeCount;
-            heartCounter.textContent = heartCount;
-            fireCounter.textContent = fireCount;
-          
+            
             // Like button
             likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
                 if(likebutton.style.backgroundColor === 'white') {
@@ -299,8 +285,10 @@ const getArticles = () => {
                     likebutton.style.border = 'black';
                     likebutton.style.fontWeight = 'bolder';
                     likeCount ++;
+                    console.log(likeCount)
                     likeCounter.textContent = likeCount;
-                    addEmoji();
+                    addEmoji(likeCounter.getAttribute("data-value"));
+
                 } else {
                     likebutton.style.backgroundColor = 'white';
                     likebutton.style.border = 'white';
@@ -318,7 +306,7 @@ const getArticles = () => {
                     heartbutton.style.fontWeight = 'bolder';
                     heartCount++;
                     heartCounter.textContent = heartCount; 
-                    addEmoji();                           
+                    addEmoji(heartCounter.getAttribute("data-value"));                           
                 } else {
                     heartbutton.style.backgroundColor = 'white';
                     heartbutton.style.border = 'white';
@@ -336,7 +324,8 @@ const getArticles = () => {
                     firebutton.style.fontWeight = 'bolder';
                     fireCount++;
                     fireCounter.textContent = fireCount;
-                    addEmoji();
+                    addEmoji(fireCounter.getAttribute("data-value"));
+
                 } else {
                     firebutton.style.backgroundColor = 'white';
                     firebutton.style.border = 'white';
@@ -345,15 +334,25 @@ const getArticles = () => {
                     fireCounter.textContent = fireCount
                 }
             }));
-        }      
-    });
-                            
-};
-                        
-                        
-                        
-                        
-                        
+    
+
+                                
+
+            const addEmoji = async (index) => {
+                try {
+                    await fetch(`http://localhost:5000/emojis/update/${index}`, {
+                        method: "PUT",
+                        body: JSON.stringify({like: likeCount, heart: heartCount, fire: fireCount}),
+                        headers: {"Content-type": "application/json; charset=UTF-8"}
+                    })
+                } catch(err) {
+                    console.log("Error: " + err)
+                }
+            }
+        }
+    })
+}
+                
 // change listener to be a display artidcles
 let inputBox = document.getElementById('postInputBox');
 let submitBtn = document.getElementById('postBtn');

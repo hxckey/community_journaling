@@ -1,7 +1,6 @@
 const superT = require('supertest')
 const app = require('community_journaling/server/server.js')
 
-
 describe('API routes', () => {
     let api;
 

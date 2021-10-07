@@ -64,7 +64,6 @@ window.onclick = function(event) {
     }
 }
 
-
 const getGiphy = async(query) => {
     let gifs = [];
     try {

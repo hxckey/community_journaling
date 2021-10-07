@@ -6,6 +6,7 @@ const windowScroll = () => {
     let navLogo = document.getElementById('navLogo');
     let navPostButton = document.getElementById('newPostButton');
 
+    //Distance from the top of the page
     if (document.documentElement.scrollTop > 80) {
         navLogo.src = 'assets/updated logo/logo_small_icon_only_inverted.png';
         navLogo.style.height = '50px';
@@ -60,6 +61,7 @@ window.onclick = function(event) {
     }
 }
 
+//Client fetch from server Giphy fetch route
 const getGiphy = async(query) => {
     let gifs = [];
     try {
@@ -78,12 +80,15 @@ const getGiphy = async(query) => {
 
 let chosenGifs = [];
 
+//Post each comment to the server with the right article id
 const postComments = async (newComment, newGifs, item) => {
-    console.log('nc ' + newComment + ' ng ' + newGifs + ' item ' + item)
+    let today = new Date();
+    let curDate = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+    let curTime = today.getHours() + ":" + today.getMinutes();
     try {
         await fetch(`http://localhost:5000/newcomment/${item}`, {
         method: "POST",
-        body: JSON.stringify({comment: newComment, gifs: newGifs}),
+        body: JSON.stringify({comment: `${curDate} - ${curTime}: ${newComment}`, gifs: newGifs}),
         headers: {"Content-type": "application/json; charset=UTF-8"}
         })
     } catch(err) {
@@ -91,22 +96,20 @@ const postComments = async (newComment, newGifs, item) => {
     }
 }
 
-const commentDisplay = (item, comments) => {  
-    let viewComments = document.getElementById('viewComments');
-    let commentsList = document.getElementById('commentsList');
+//Lets a user retrieve and submit GIFs from Giphy
+const commentDisplay = (commentsIdVal) => {  
     let searchGif = document.getElementById('searchGif');
     let gifQuery = document.getElementById('gifSearchQuery');
     let gifResults = document.getElementById('gifResults');
     let submitComment = document.getElementById('commentsForm');
 
-    while(commentsList.firstChild){
-        commentsList.firstChild.remove();
-    }
     searchGif.addEventListener('click', e => {
         e.preventDefault();
+        //Clears exisitng displayed GIFs on the modal
         while(gifResults.firstChild){
             gifResults.firstChild.remove();
         }
+        //Calls Giphy retrieval function with query
         getGiphy(gifQuery.value).then(resultList => {
             for(item of resultList){
                 let newGif = document.createElement('div');
@@ -117,6 +120,7 @@ const commentDisplay = (item, comments) => {
         })   
     });
     
+    //Remove displayed GIFs on the modal
     let clearGifs = document.getElementById('clearGifs');
     clearGifs.addEventListener('click', e => {
         while(gifResults.firstChild){
@@ -124,59 +128,29 @@ const commentDisplay = (item, comments) => {
         }
     })
     
+    //Deletes a user's selected GIFs
     let removeGif = document.getElementById('removeGif');
     removeGif.addEventListener('click', e => {
         chosenGifs = [];
         alert('Selected GIFs removed.');
     });
 
-    viewComments.addEventListener('click', e => {
-        while(commentsList.firstChild){
-            commentsList.firstChild.remove();
-        }
-        fetch('http://localhost:5000/articles')
-            .then(response => response.json())
-            .then(data => {
-                console.log(data)
-                let commentList = [];
-                for(resultObj of data.results[item].postComments){
-                    commentList.push({comment: resultObj.comment, gifs: resultObj.gifs})
-                }
-                //commentList.push(data.results[item].postComments)
-                for(commentText of commentList){
-                    let commentTitle = document.createElement('dt');
-                    let commentDesc = document.createElement('dd');
-                    commentTitle.textContent = 'Anonymous';
-                    console.log(commentText)
-                    commentDesc.textContent = commentText.comment;
-                    if(commentText.gifs){
-                        for(gifItem in commentText.gifs){
-                            console.log(gifItem)
-                            let commentGif = document.createElement('img');
-                            commentGif.src = commentText.gifs[gifItem];
-                            commentsList.insertAdjacentElement('afterbegin', commentGif);
-                        } 
-                    }
-                    commentsList.insertAdjacentElement('afterbegin', commentDesc);
-                    commentsList.insertAdjacentElement('afterbegin', commentTitle);
-                }
-            });
-    });
-    
+    //Posts the user's comments and selected GIFs to the server
     submitComment.addEventListener('submit', e => {
         e.preventDefault();
         try {
-            postComments(submitComment.comments.value, chosenGifs || [], item);
+            postComments(submitComment.comments.value, chosenGifs || [], commentsIdVal);
             alert('Comment Submitted');
             chosenGifs = [];
-            submitComment.reset();
+            location.reload();
         } catch(err) {
             console.log(err);
         }
     });
 }
 
-const showModal = (item, data) => {
+//Displays the modal with the article information
+const showModal = (data) => {
     let seeMore = document.getElementById(`viewPost${item}`);
     seeMore.addEventListener('click', e => {
         let modalTitle = document.getElementById('modalTitle');
@@ -184,11 +158,13 @@ const showModal = (item, data) => {
         articleContent.textContent = data.entry;   
         viewModal.style.display = 'block';
         let commentsData = data.postComments;
-        commentDisplay(item, commentsData);
+        let commentsId = seeMore.getAttribute('data-value');
+        commentDisplay(commentsId, commentsData);
     });
-    
 }
 
+let resultId;
+let resultVal;
 
 // Functionality for New Post button
 const postBtn = document.getElementById('newPostButton')
@@ -210,27 +186,87 @@ const getArticles = () => {
 
             let displayArticle = document.createElement('div')
             let articleBody = document.getElementById('article-body')
+            //Create and display article on the page
             displayArticle.innerHTML= 
-            `<div class="card" id="box1">
-            <header>${data.results[item].title}</header>
-            <p>${data.results[item].entry}</p>
-                    <a class = "commentBtn" id="viewPost${item}">See more</a>
-                    <footer>
-                        <p></p>
-                        <p></p>
-                        <p></p>            
+
+                `<div class="card" id="box1">
+                    <header><h3>${data.results[item].title}</h3></header>
+                    <p class="articleContent">${data.results[item].entry.substring(0,100)+'...'}</p>
+                    <a class="commentBtn" id="viewPost${item}" data-value="${item}">See more</a>
+                    <button id="commentsShow${item}" class="btn-info mt-2 showComments" type="button">Show ${data.results[item].postComments.length} Comments</button>
+                    <button id="commentsHide${item}" class="btn-primary mt-2 hideComments" type="button">Hide Comments</button>
+                    <dl id="commentsList${item}"></dl>
+                    <section>     
                         <div id="formBtnContainer" class="btn-group u-pull-right">
                         <button class="btn likeEmoji" style="background-color: white;">Likes: <span id='likeCounter${item}' data-value="${item}">${likeCount}</span><img src="./assets/like.png"></button>
-                        <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}' data-value="${item}">${heartCount}<img src="./assets/heart.png"></button>
+                        <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}' data-value="${item}">${heartCount}</span><img src="./assets/heart.png"></button>
                         <button class="btn fireEmoji" style="background-color: white;">Fire: <span id="fireCounter${item}" data-value="${item}">${fireCount}</span><img src="./assets/fire.png"></button>
                         </div>
-                        </footer>
-                        </div>`
-                        
-                        articleBody.append(displayArticle);
+                    </section>
+                </div>`
 
-                        showModal(item, data.results[item]);
-                        
+            articleBody.append(displayArticle);
+
+            let foundComments = data.results[item].postComments
+            let viewComments = document.getElementById(`commentsShow${item}`);
+            let hideComments = document.getElementById(`commentsHide${item}`);
+            let commentsList = document.getElementById(`commentsList${item}`);
+            
+            commentsList.style.display = "none";
+            hideComments.style.display = "none";
+            viewComments.style.display = "block";
+
+            for(commentText of foundComments){
+                let commentTitle = document.createElement('dt');
+                let commentDesc = document.createElement('dd');
+                commentTitle.textContent = 'Anonymous';
+                commentDesc.textContent = commentText.comment;
+                if(commentText.gifs){
+                    for(gifItem in commentText.gifs){
+                        let commentGif = document.createElement('img');
+                        commentGif.src = commentText.gifs[gifItem];
+                        commentsList.insertAdjacentElement('afterbegin', commentGif);
+                    } 
+                }
+                commentsList.insertAdjacentElement('afterbegin', commentDesc);
+                commentsList.insertAdjacentElement('afterbegin', commentTitle);
+            }
+
+            viewComments.addEventListener('click', e => {
+                commentsList.style.display = "block";
+                hideComments.style.display = "block";
+                viewComments.style.display = "none"
+            });
+
+            hideComments.addEventListener('click', e => {
+                commentsList.style.display = "none";
+                hideComments.style.display = "none";
+                viewComments.style.display = "block";
+            });
+            
+            /* for(commentText of foundComments){
+                let commentTitle = document.createElement('dt');
+                let commentDesc = document.createElement('dd');
+                commentTitle.textContent = 'Anonymous';
+                console.log(commentText.comment)
+                commentDesc.textContent = commentText.comment;
+                if(commentText.gifs){
+                    for(gifItem in commentText.gifs){
+                        console.log(gifItem)
+                        let commentGif = document.createElement('img');
+                        commentGif.src = commentText.gifs[gifItem];
+                        commentsList.insertAdjacentElement('afterbegin', commentGif);
+                    } 
+                }
+                commentsList.insertAdjacentElement('afterbegin', commentDesc);
+                commentsList.insertAdjacentElement('afterbegin', commentTitle);
+            } */
+
+            
+            resultVal = data.results[item];
+            showModal(resultVal);  
+            
+            // Functions
             //// Emoji counter
                 
             //Selectors
@@ -242,7 +278,7 @@ const getArticles = () => {
             let likeCounter = document.getElementById(`likeCounter${item}`);
             let heartCounter = document.getElementById(`heartCounter${item}`);
             let fireCounter = document.getElementById(`fireCounter${item}`);
-
+            
             // Like button
             likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
                 if(likebutton.style.backgroundColor === 'white') {
@@ -253,6 +289,7 @@ const getArticles = () => {
                     console.log(likeCount)
                     likeCounter.textContent = likeCount;
                     addEmoji(likeCounter.getAttribute("data-value"));
+
                 } else {
                     likebutton.style.backgroundColor = 'white';
                     likebutton.style.border = 'white';
@@ -289,6 +326,7 @@ const getArticles = () => {
                     fireCount++;
                     fireCounter.textContent = fireCount;
                     addEmoji(fireCounter.getAttribute("data-value"));
+
                 } else {
                     firebutton.style.backgroundColor = 'white';
                     firebutton.style.border = 'white';
@@ -296,8 +334,10 @@ const getArticles = () => {
                     fireCount--;
                     fireCounter.textContent = fireCount
                 }
-                                
             }));
+    
+
+                                
 
             const addEmoji = async (index) => {
                 try {
@@ -311,15 +351,9 @@ const getArticles = () => {
                 }
             }
         }
-                        
-    });
-                            
-};
-
-                        
-
-                        
-
+    })
+}
+                
 // change listener to be a display artidcles
 let inputBox = document.getElementById('postInputBox');
 let submitBtn = document.getElementById('postBtn');

@@ -194,11 +194,11 @@ const getArticles = () => {
                     <header><h3>${data.results[item].title}</h3></header>
                     <p class="articleContent">${data.results[item].entry}</p>
                     <button class="commentBtn btn-link" id="viewPost${item}" data-value="${item}">Leave Comment</button>
-                    <button id="commentsShow${item}" class="btn-info mt-2 showComments" type="button">Show ${data.results[item].postComments.length} Comments</button>
+                    <button id="commentsShow${item}" class="commentBtn btn-info mt-2 showComments" type="button">Show ${data.results[item].postComments.length} Comments</button>
                     <button id="commentsHide${item}" class="btn-primary mt-2 hideComments" type="button">Hide Comments</button>
                     <dl id="commentsList${item}"></dl>
-                    <section>     
-                        <div id="formBtnContainer" class="btn-group u-pull-right">
+                    <section id="emojiButtons${item}">     
+                        <div id="formBtnContainer" class="btn-group">
                         <button class="btn likeEmoji" style="background-color: white;">Likes: <span id='likeCounter${item}' data-value="${item}">${likeCount}</span><img src="./assets/like.png"></button>
                         <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}' data-value="${item}">${heartCount}</span><img src="./assets/heart.png"></button>
                         <button class="btn fireEmoji" style="background-color: white;">Fire: <span id="fireCounter${item}" data-value="${item}">${fireCount}</span><img src="./assets/fire.png"></button>
@@ -212,10 +212,12 @@ const getArticles = () => {
             let viewComments = document.getElementById(`commentsShow${item}`);
             let hideComments = document.getElementById(`commentsHide${item}`);
             let commentsList = document.getElementById(`commentsList${item}`);
+            let emojiButtons = document.getElementById(`emojiButtons${item}`);
             
             commentsList.style.display = "none";
             hideComments.style.display = "none";
             viewComments.style.display = "inline";
+            emojiButtons.style.display = "inline";
 
             for(commentText of foundComments){
                 let commentTitle = document.createElement('dt');

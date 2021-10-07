@@ -19,10 +19,32 @@ describe('articles.html', () => {
     describe('header', () => {
         test('it has a body', () => {
             const body = document.querySelector('body')
-            expect(body).toBeTruthy();
+            expect(body.textContent).toBeTruthy();
+        })
+    })
+    describe('footer', () => {
+        test('it has a footer with links', () => {
+            const footer = document.getElementById('CoCFooter')
+            const footerLinks = document.getElementsByClassName('ourFooterBtn')
+            expect(footer).toBeTruthy();
+            expect(footer).toContain(footerLinks)
         })
     })
 })
+
+describe('links', () => {
+    describe('footer links', () => {
+        it('footer links lead to corresponding pages', () => {
+            const footerHomeLink = document.getElementById('homepageButton')
+            expect(footerHomeLink).toBeTruthy();
+            
+            const mockCallBack = jest.fn();
+            footerHomeLink.simulate('click');
+            expect(mockCallBack.mock.calls.length).toEqual(1);
+  });
+        })
+    })
+
 
 // describe('articles js functions', () => {
 //     describe('Post modal functions', () => {

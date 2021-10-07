@@ -156,6 +156,11 @@ nav {
     padding: 0;
 }
 
+.conductTitle {
+    text-decoration: underline;
+    text-decoration-color: var(--pink-purple);
+}
+
 #footer-navbar {
     margin: 20px 0 0 0;
     display: flex;

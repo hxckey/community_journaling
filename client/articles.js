@@ -1,4 +1,3 @@
-
 //// Navbar JS
 window.onscroll = () => windowScroll();
 
@@ -27,8 +26,6 @@ const windowScroll = () => {
         nav.style.transition = 'height 0.2s'
     }
 }
-
-
 
 //// Functionality for the article modals 
 // Store the required arrays

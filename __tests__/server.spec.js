@@ -35,6 +35,21 @@ describe('API routes', () => {
         .expect(200)
     })
 
+    test("test specific article wrong index path", () => {
+        return superT(api)
+        .get("/articles/-1")
+        .expect(404)
+        .expect({
+            message: 'Please enter a number greater than 0.'
+        })
+    })
+
+    test('test gifs query path', () => {
+        return superT(api)
+        .get('/gifs/dog')
+        .expect(200)
+    })
+
     test('test post path for articles', () => {
         return superT(api)
         .post('/entry')
@@ -43,16 +58,72 @@ describe('API routes', () => {
 
     test('test post path for comments', () => {
         return superT(api)
-        .post("/newcomment")
+        .post("/newcomment/1")
         .expect(201)
-        .expect('Comment posted')
+        .expect({
+            message: "Comment posted"
+        })
     })
 
     test('test delete path for articles', () => {
         return superT(api)
         .delete("/articles/delete/1")
-        .expect(204)
-        .expect("Article deleted")
+        .expect({
+            message: "Article deleted",
+            success: true
+        })
+    })
+
+    test('test article delete wrong index path', () => {
+        return superT(api)
+        .delete("/articles/delete/-1")
+        .expect(404)
+        .expect({
+            message: 'Please enter a number greater than 0.'
+        })
+    })
+
+    test('test article update path', () => {
+        return superT(api)
+        .put("/articles/update/2")
+        .expect(201)
+        .expect({
+            message: "Your post has been updated"
+        })
+    })
+
+    test('test article update wrong index path', () => {
+        return superT(api)
+        .put("/articles/update/-1")
+        .expect(404)
+        .expect({
+            message: 'Please enter a number greater than 0.'
+        })
+    })
+       
+    test('test emoji update path', () => {
+        return superT(api)
+        .put("/emojis/update/1")
+        .expect(200)
+        .expect({
+            message: "Post emoji-ed"        
+        })
+    })
+
+    test('test emoji update wrong index path', () => {
+        return superT(api)
+        .put("/emojis/update/-1")
+        .expect(500)
+        .expect({
+            message: "Error: post could not be emoji-ed"        
+        })
+    })
+
+    test('test errors', () => {
+        return superT(api)
+        .put("/error")
+        .expect(404)
     })
 
 });
+

@@ -10,25 +10,24 @@ app.use(express.json());
 const articles = [
     {
         id: 1,
-        title: "first article",
-        entry: "slufgkejfdpihq", 
+        title: "Winter Support",
+        entry: "Worried about keeping warm this winter? You might be eligible for support to get your home more energy efficient. Turning the heating on is a simple step to stay warm, but some of us find it hard to keep our home warm and are faced with high energy bills. If you're struggling and worried about keeping warm this winter, then support can be available.", 
         postComments: [
-            {comment: 'comment one', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
-            {comment: 'comment two', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
-            {comment: 'comment three', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']}
+            {comment: 'Thanks for the advice.', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+            {comment: 'Could you provide more information?', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+            {comment: 'cGood to know, thanks.', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']}
         ], 
         emojis: {like: 0, heart: 0, fire: 0}
     }, 
     {
         id: 2,
-        title: "second article",
-        entry: "hello world", 
+        title: "Missing Cat",
+        entry: "Hi everyone, our cat Mike has gone missing. Two days ago came in and then went out in the garden! Please if you seen him let us know ! My daughter is missing him so much!", 
         postComments: [
-            {comment: 'comment four', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
-            {comment: 'comment five', gifs: []},
-            {comment: 'comment six', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']}
+            {comment: 'Sorry to hear, hope you find Mike!', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']},
+            {comment: 'I think I might have seen him down the high street.', gifs: []},
+            {comment: 'Oh no, hope you find Mike!', gifs: ['https://media.giphy.com/media/WVjmqI7jPwIUM/giphy.gif']}
         ], 
-        gifs: ["gif1", "gif2"],
         emojis: {like: 1, heart: 2, fire: 3}
     }
 ]

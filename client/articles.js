@@ -1,4 +1,3 @@
-// const e = require("express");
 
 //// Navbar JS
 window.onscroll = () => windowScroll();
@@ -8,6 +7,7 @@ const windowScroll = () => {
     let navLogo = document.getElementById('navLogo');
     let navPostButton = document.getElementById('newPostButton');
 
+    //Distance from the top of the page
     if (document.documentElement.scrollTop > 80) {
         navLogo.src = 'assets/updated logo/logo_small_icon_only_inverted.png';
         navLogo.style.height = '50px';
@@ -64,6 +64,7 @@ window.onclick = function(event) {
     }
 }
 
+//Client fetch from server Giphy fetch route
 const getGiphy = async(query) => {
     let gifs = [];
     try {
@@ -82,12 +83,15 @@ const getGiphy = async(query) => {
 
 let chosenGifs = [];
 
+//Post each comment to the server with the right article id
 const postComments = async (newComment, newGifs, item) => {
-    console.log('nc ' + newComment + ' ng ' + newGifs + ' item ' + item)
+    let today = new Date();
+    let curDate = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
+    let curTime = today.getHours() + ":" + today.getMinutes();
     try {
         await fetch(`http://localhost:5000/newcomment/${item}`, {
         method: "POST",
-        body: JSON.stringify({comment: newComment, gifs: newGifs}),
+        body: JSON.stringify({comment: `${curDate} - ${curTime}: ${newComment}`, gifs: newGifs}),
         headers: {"Content-type": "application/json; charset=UTF-8"}
         })
     } catch(err) {
@@ -95,8 +99,8 @@ const postComments = async (newComment, newGifs, item) => {
     }
 }
 
-const commentDisplay = (commentsIdVal, comments) => {  
-    //let commentsList = document.getElementById('commentsList');
+//Lets a user retrieve and submit GIFs from Giphy
+const commentDisplay = (commentsIdVal) => {  
     let searchGif = document.getElementById('searchGif');
     let gifQuery = document.getElementById('gifSearchQuery');
     let gifResults = document.getElementById('gifResults');
@@ -104,9 +108,11 @@ const commentDisplay = (commentsIdVal, comments) => {
 
     searchGif.addEventListener('click', e => {
         e.preventDefault();
+        //Clears exisitng displayed GIFs on the modal
         while(gifResults.firstChild){
             gifResults.firstChild.remove();
         }
+        //Calls Giphy retrieval function with query
         getGiphy(gifQuery.value).then(resultList => {
             for(item of resultList){
                 let newGif = document.createElement('div');
@@ -117,6 +123,7 @@ const commentDisplay = (commentsIdVal, comments) => {
         })   
     });
     
+    //Remove displayed GIFs on the modal
     let clearGifs = document.getElementById('clearGifs');
     clearGifs.addEventListener('click', e => {
         while(gifResults.firstChild){
@@ -124,49 +131,14 @@ const commentDisplay = (commentsIdVal, comments) => {
         }
     })
     
+    //Deletes a user's selected GIFs
     let removeGif = document.getElementById('removeGif');
     removeGif.addEventListener('click', e => {
         chosenGifs = [];
         alert('Selected GIFs removed.');
     });
 
-    //const getComments = (indexVal) => {
-        /* let commentList = [];
-        fetch('http://localhost:5000/articles')
-            .then(response => response.json())
-            .then(data => {
-                for(resultObj of data.results[indexVal].postComments){
-                    commentList.push({comment: resultObj.comment, gifs: resultObj.gifs})
-                }
-
-            }
-        )
-        return commentList;
-    }
-
-    viewComments.addEventListener('click', e => {
-        let foundComments = getComments(commentsIdVal);
-        //commentList.push(data.results[item].postComments)
-        console.log(foundComments);
-        for(commentText of foundComments){
-            let commentTitle = document.createElement('dt');
-            let commentDesc = document.createElement('dd');
-            commentTitle.textContent = 'Anonymous';
-            console.log('hi' + foundComments[commentText].comment)
-            commentDesc.textContent = commentText.comment;
-            if(commentText.gifs){
-                for(gifItem in commentText.gifs){
-                    console.log(gifItem)
-                    let commentGif = document.createElement('img');
-                    commentGif.src = commentText.gifs[gifItem];
-                    commentsList.insertAdjacentElement('afterbegin', commentGif);
-                } 
-            }
-            commentsList.insertAdjacentElement('afterbegin', commentDesc);
-            commentsList.insertAdjacentElement('afterbegin', commentTitle);
-        }
-    }); */
-        
+    //Posts the user's comments and selected GIFs to the server
     submitComment.addEventListener('submit', e => {
         e.preventDefault();
         try {
@@ -180,6 +152,7 @@ const commentDisplay = (commentsIdVal, comments) => {
     });
 }
 
+//Displays the modal with the article information
 const showModal = (data) => {
     let seeMore = document.getElementById(`viewPost${item}`);
     seeMore.addEventListener('click', e => {
@@ -216,34 +189,65 @@ const getArticles = () => {
 
             let displayArticle = document.createElement('div')
             let articleBody = document.getElementById('article-body')
+            //Create and display article on the page
             displayArticle.innerHTML= 
 
                 `<div class="card" id="box1">
-                    <header>${data.results[item].title}</header>
-                    <p>${data.results[item].entry}</p>
-                    <a class ="commentBtn" id="viewPost${item}" data-value="${item}">See more</a>
-                    <button id="commentsShow" class="btn-info showComments" type="button">Show ${data.results[item].postComments.length} Comments</button>
-                    <button id="commentsHide" class="btn-primary hideComments" type="button">Hide Comments</button>
+                    <header><h3>${data.results[item].title}</h3></header>
+                    <p class="articleContent">${data.results[item].entry.substring(0,100)+'...'}</p>
+                    <a class="commentBtn" id="viewPost${item}" data-value="${item}">See more</a>
+                    <button id="commentsShow${item}" class="btn-info mt-2 showComments" type="button">Show ${data.results[item].postComments.length} Comments</button>
+                    <button id="commentsHide${item}" class="btn-primary mt-2 hideComments" type="button">Hide Comments</button>
                     <dl id="commentsList${item}"></dl>
-                    <footer>
-                        <p></p>
-                        <p></p>
-                        <p></p>            
+                    <section>     
                         <div id="formBtnContainer" class="btn-group u-pull-right">
                         <button class="btn likeEmoji" style="background-color: white;">Likes: <span id='likeCounter${item}' data-value="${item}">${likeCount}</span><img src="./assets/like.png"></button>
-                        <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}' data-value="${item}">${heartCount}<img src="./assets/heart.png"></button>
+                        <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}' data-value="${item}">${heartCount}</span><img src="./assets/heart.png"></button>
                         <button class="btn fireEmoji" style="background-color: white;">Fire: <span id="fireCounter${item}" data-value="${item}">${fireCount}</span><img src="./assets/fire.png"></button>
                         </div>
-                    </footer>
+                    </section>
                 </div>`
 
             articleBody.append(displayArticle);
 
             let foundComments = data.results[item].postComments
-            let viewComments = document.getElementById('viewComments');
+            let viewComments = document.getElementById(`commentsShow${item}`);
+            let hideComments = document.getElementById(`commentsHide${item}`);
             let commentsList = document.getElementById(`commentsList${item}`);
             
+            commentsList.style.display = "none";
+            hideComments.style.display = "none";
+            viewComments.style.display = "block";
+
             for(commentText of foundComments){
+                let commentTitle = document.createElement('dt');
+                let commentDesc = document.createElement('dd');
+                commentTitle.textContent = 'Anonymous';
+                commentDesc.textContent = commentText.comment;
+                if(commentText.gifs){
+                    for(gifItem in commentText.gifs){
+                        let commentGif = document.createElement('img');
+                        commentGif.src = commentText.gifs[gifItem];
+                        commentsList.insertAdjacentElement('afterbegin', commentGif);
+                    } 
+                }
+                commentsList.insertAdjacentElement('afterbegin', commentDesc);
+                commentsList.insertAdjacentElement('afterbegin', commentTitle);
+            }
+
+            viewComments.addEventListener('click', e => {
+                commentsList.style.display = "block";
+                hideComments.style.display = "block";
+                viewComments.style.display = "none"
+            });
+
+            hideComments.addEventListener('click', e => {
+                commentsList.style.display = "none";
+                hideComments.style.display = "none";
+                viewComments.style.display = "block";
+            });
+            
+            /* for(commentText of foundComments){
                 let commentTitle = document.createElement('dt');
                 let commentDesc = document.createElement('dd');
                 commentTitle.textContent = 'Anonymous';
@@ -259,7 +263,7 @@ const getArticles = () => {
                 }
                 commentsList.insertAdjacentElement('afterbegin', commentDesc);
                 commentsList.insertAdjacentElement('afterbegin', commentTitle);
-            }
+            } */
 
             
             resultVal = data.results[item];

@@ -7,6 +7,9 @@
     <title>StreetHub - Articles</title>    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cirrus-ui@0.6.0/dist/cirrus.min.css">
     <link rel="icon" href="assets/updated logo/logo_small_icon_only_inverted.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css" type="text/css">
     <link rel="stylesheet" href="article.css">
     <script defer src="articles.js"></script>
@@ -42,9 +45,9 @@
             <div class="modalContent">
                 <header class='modalHeader'>
                     <span class = "closeBtn">&times;</span>
-                    <h2 id="modalTitle"></h2>
                 </header>
                 <section class="modalBody">
+                    <h2 id="modalTitle"></h2>
                     <p id="articleContent"></p>
                     <p>Comments section</p>
                     <form id="commentsForm">
@@ -56,7 +59,6 @@
                         <input type="submit" class="btn-link u-pull-right w-20"/>
                         <section id="gifResults"></section>
                     </form>
-                    <button id="viewComments" class="bg-indigo-500 text-light mt-4">View Comments</button>
                 </section>   
                 <footer class="modalFooter">
                     <h3>Please read our Code of Conduct before posting</h3>

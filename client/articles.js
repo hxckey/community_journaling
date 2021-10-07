@@ -163,18 +163,16 @@ const showModal = (data) => {
     });
 }
 
-let resultId;
 let resultVal;
 
 // Functionality for New Post button
-const postBtn = document.getElementById('newPostButton')
+const postButton = document.getElementById('newPostButton')
 const newPost = document.getElementById('newPost');
 const closePost = document.getElementById('closepostBtn')
 const getArticles = () => {
     let articles = [];
     fetch('http://localhost:5000/articles')
     .then(response => response.json())
-    // let ressies = response.json
     .then(data => {
         articles.push(data)
         //display articles into boxes 
@@ -243,25 +241,6 @@ const getArticles = () => {
                 hideComments.style.display = "none";
                 viewComments.style.display = "inline";
             });
-            
-            /* for(commentText of foundComments){
-                let commentTitle = document.createElement('dt');
-                let commentDesc = document.createElement('dd');
-                commentTitle.textContent = 'Anonymous';
-                console.log(commentText.comment)
-                commentDesc.textContent = commentText.comment;
-                if(commentText.gifs){
-                    for(gifItem in commentText.gifs){
-                        console.log(gifItem)
-                        let commentGif = document.createElement('img');
-                        commentGif.src = commentText.gifs[gifItem];
-                        commentsList.insertAdjacentElement('afterbegin', commentGif);
-                    } 
-                }
-                commentsList.insertAdjacentElement('afterbegin', commentDesc);
-                commentsList.insertAdjacentElement('afterbegin', commentTitle);
-            } */
-
             
             resultVal = data.results[item];
             showModal(resultVal);  
@@ -378,7 +357,7 @@ function outsidePostClick(e) {
 }
 
 // Listens for clicks
-postBtn.addEventListener('click', openPostModal);
+postButton.addEventListener('click', openPostModal);
 closePostBtn.addEventListener('click', closePostModal);
 window.addEventListener('click', outsidePostClick);
 
@@ -412,3 +391,5 @@ articleForm.addEventListener('submit', (e) => {
     closePostModal();
     location.reload();
 });
+
+//module.exports = { openPostModal }

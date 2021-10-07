@@ -28,8 +28,6 @@ const windowScroll = () => {
     }
 }
 
-
-
 //// Functionality for the article modals 
 // Store the required arrays
 const modals = document.getElementsByClassName('ourModal');
@@ -194,8 +192,8 @@ const getArticles = () => {
 
                 `<div class="card" id="box1">
                     <header><h3>${data.results[item].title}</h3></header>
-                    <p class="articleContent">${data.results[item].entry.substring(0,100)+'...'}</p>
-                    <a class="commentBtn" id="viewPost${item}" data-value="${item}">See more</a>
+                    <p class="articleContent">${data.results[item].entry}</p>
+                    <button class="commentBtn btn-link" id="viewPost${item}" data-value="${item}">Leave Comment</button>
                     <button id="commentsShow${item}" class="btn-info mt-2 showComments" type="button">Show ${data.results[item].postComments.length} Comments</button>
                     <button id="commentsHide${item}" class="btn-primary mt-2 hideComments" type="button">Hide Comments</button>
                     <dl id="commentsList${item}"></dl>
@@ -217,7 +215,7 @@ const getArticles = () => {
             
             commentsList.style.display = "none";
             hideComments.style.display = "none";
-            viewComments.style.display = "block";
+            viewComments.style.display = "inline";
 
             for(commentText of foundComments){
                 let commentTitle = document.createElement('dt');
@@ -237,14 +235,14 @@ const getArticles = () => {
 
             viewComments.addEventListener('click', e => {
                 commentsList.style.display = "block";
-                hideComments.style.display = "block";
+                hideComments.style.display = "inline";
                 viewComments.style.display = "none"
             });
 
             hideComments.addEventListener('click', e => {
                 commentsList.style.display = "none";
                 hideComments.style.display = "none";
-                viewComments.style.display = "block";
+                viewComments.style.display = "inline";
             });
             
             /* for(commentText of foundComments){

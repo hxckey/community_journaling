@@ -395,7 +395,7 @@ const postArticle = async (newEntry) => {
     try {
         await fetch('http://localhost:5000/entry', {
             method: "POST",
-            body: JSON.stringify({entry: articleInput.value, title: titleInput.value, emojis: {like: 0, heart: 0, fire: 0}}),
+            body: JSON.stringify({entry: articleInput.value, title: titleInput.value, postComments: [{comment: "Hello welcome to the comments section! Please read the Code of Conduct before posting."}], emojis: {like: 0, heart: 0, fire: 0}}),
             headers: {"Content-type": "application/json; charset=UTF-8"}
         })
         console.log(articleInput.value)

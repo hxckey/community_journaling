@@ -228,6 +228,7 @@ const getArticles = () => {
                 }
                 commentsList.insertAdjacentElement('afterbegin', commentDesc);
                 commentsList.insertAdjacentElement('afterbegin', commentTitle);
+                commentTitle.style.borderTop = "2px solid purple"
             }
 
             viewComments.addEventListener('click', e => {

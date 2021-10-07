@@ -109,17 +109,13 @@ const postComments = async (newComment, newGifs, item) => {
     }
 }
 
-const commentDisplay = (item, comments) => {  
-    let viewComments = document.getElementById('viewComments');
-    let commentsList = document.getElementById('commentsList');
+const commentDisplay = (commentsIdVal, comments) => {  
+    //let commentsList = document.getElementById('commentsList');
     let searchGif = document.getElementById('searchGif');
     let gifQuery = document.getElementById('gifSearchQuery');
     let gifResults = document.getElementById('gifResults');
     let submitComment = document.getElementById('commentsForm');
 
-    while(commentsList.firstChild){
-        commentsList.firstChild.remove();
-    }
     searchGif.addEventListener('click', e => {
         e.preventDefault();
         while(gifResults.firstChild){
@@ -148,38 +144,41 @@ const commentDisplay = (item, comments) => {
         alert('Selected GIFs removed.');
     });
 
-    viewComments.addEventListener('click', e => {
-        while(commentsList.firstChild){
-            commentsList.firstChild.remove();
-        }
+    //const getComments = (indexVal) => {
+        /* let commentList = [];
         fetch('http://localhost:5000/articles')
             .then(response => response.json())
             .then(data => {
-                console.log(data)
-                let commentList = [];
-                for(resultObj of data.results[item].postComments){
+                for(resultObj of data.results[indexVal].postComments){
                     commentList.push({comment: resultObj.comment, gifs: resultObj.gifs})
                 }
-                //commentList.push(data.results[item].postComments)
-                for(commentText of commentList){
-                    let commentTitle = document.createElement('dt');
-                    let commentDesc = document.createElement('dd');
-                    commentTitle.textContent = 'Anonymous';
-                    console.log(commentText)
-                    commentDesc.textContent = commentText.comment;
-                    if(commentText.gifs){
-                        for(gifItem in commentText.gifs){
-                            console.log(gifItem)
-                            let commentGif = document.createElement('img');
-                            commentGif.src = commentText.gifs[gifItem];
-                            commentsList.insertAdjacentElement('afterbegin', commentGif);
-                        } 
-                    }
-                    commentsList.insertAdjacentElement('afterbegin', commentDesc);
-                    commentsList.insertAdjacentElement('afterbegin', commentTitle);
-                }
-            });
-    });
+            }
+        )
+        return commentList;
+    }
+
+    viewComments.addEventListener('click', e => {
+        let foundComments = getComments(commentsIdVal);
+        //commentList.push(data.results[item].postComments)
+        console.log(foundComments);
+        for(commentText of foundComments){
+            let commentTitle = document.createElement('dt');
+            let commentDesc = document.createElement('dd');
+            commentTitle.textContent = 'Anonymous';
+            console.log('hi' + foundComments[commentText].comment)
+            commentDesc.textContent = commentText.comment;
+            if(commentText.gifs){
+                for(gifItem in commentText.gifs){
+                    console.log(gifItem)
+                    let commentGif = document.createElement('img');
+                    commentGif.src = commentText.gifs[gifItem];
+                    commentsList.insertAdjacentElement('afterbegin', commentGif);
+                } 
+            }
+            commentsList.insertAdjacentElement('afterbegin', commentDesc);
+            commentsList.insertAdjacentElement('afterbegin', commentTitle);
+        }
+    }); */
         
     submitComment.addEventListener('submit', e => {
         e.preventDefault();
@@ -194,7 +193,7 @@ const commentDisplay = (item, comments) => {
     });
 }
 
-const showModal = (item, data) => {
+const showModal = (data) => {
     let seeMore = document.getElementById(`viewPost${item}`);
     seeMore.addEventListener('click', e => {
         let modalTitle = document.getElementById('modalTitle');
@@ -202,11 +201,14 @@ const showModal = (item, data) => {
         articleContent.textContent = data.entry;   
         viewModal.style.display = 'block';
         let commentsData = data.postComments;
-        commentDisplay(item, commentsData);
+        let commentsId = seeMore.getAttribute('data-value');
+        commentDisplay(commentsId, commentsData);
     });
     
 }
 
+let resultId;
+let resultVal;
 // Functionality for New Post button
 const postBtn = document.getElementById('newPostButton')
 const newPost = document.getElementById('newPost');
@@ -226,7 +228,10 @@ const getArticles = () => {
                 `<div class="card" id="box1">
                     <header>${data.results[item].title}</header>
                     <p>${data.results[item].entry}</p>
-                    <a class = "commentBtn" id="viewPost${item}">See more</a>
+                    <a class ="commentBtn" id="viewPost${item}" data-value="${item}">See more</a>
+                    <button id="commentsShow" class="btn-info showComments" type="button">Show ${data.results[item].postComments.length} Comments</button>
+                    <button id="commentsHide" class="btn-primary hideComments" type="button">Hide Comments</button>
+                    <dl id="commentsList${item}"></dl>
                     <footer>
                         <p></p>
                         <p></p>
@@ -238,10 +243,34 @@ const getArticles = () => {
                         </div>
                     </footer>
                 </div>`
-            
+
             articleBody.append(displayArticle);
 
-            showModal(item, data.results[item]);
+            let foundComments = data.results[item].postComments
+            let viewComments = document.getElementById('viewComments');
+            let commentsList = document.getElementById(`commentsList${item}`);
+            
+            for(commentText of foundComments){
+                let commentTitle = document.createElement('dt');
+                let commentDesc = document.createElement('dd');
+                commentTitle.textContent = 'Anonymous';
+                console.log(commentText.comment)
+                commentDesc.textContent = commentText.comment;
+                if(commentText.gifs){
+                    for(gifItem in commentText.gifs){
+                        console.log(gifItem)
+                        let commentGif = document.createElement('img');
+                        commentGif.src = commentText.gifs[gifItem];
+                        commentsList.insertAdjacentElement('afterbegin', commentGif);
+                    } 
+                }
+                commentsList.insertAdjacentElement('afterbegin', commentDesc);
+                commentsList.insertAdjacentElement('afterbegin', commentTitle);
+            }
+
+            
+            resultVal = data.results[item];
+            showModal(resultVal);  
             
             // Functions
             //// Emoji counter
@@ -263,61 +292,60 @@ const getArticles = () => {
             heartCounter.textContent = heartCount;
             fireCounter.textContent = fireCount;
           
-                            // Like button
-                            likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
-                                if(likebutton.style.backgroundColor === 'white') {
-                                    likebutton.style.backgroundColor = 'rgb(41,114,250)';
-                                    likebutton.style.border = 'black';
-                                    likebutton.style.fontWeight = 'bolder';
-                                    likeCount ++;
-                                    likeCounter.textContent = likeCount;
-                                    addEmoji();
-                                } else {
-                                    likebutton.style.backgroundColor = 'white';
-                                    likebutton.style.border = 'white';
-                                    likebutton.style.fontWeight = 'normal';
-                                    likeCount --;
-                                    likeCounter.textContent = likeCount
-                                }
-                            }));
-                            
-                            // Heart button
-                            heartBtn.forEach(heartbutton => heartbutton.addEventListener('click', (e) => {
-                                if(heartbutton.style.backgroundColor === 'white') {
-                                    heartbutton.style.backgroundColor = 'rgb(211,105,116)';
-                                    heartbutton.style.border = 'black';
-                                    heartbutton.style.fontWeight = 'bolder';
-                                    heartCount++;
-                                    heartCounter.textContent = heartCount; 
-                                    addEmoji();                           
-                                } else {
-                                    heartbutton.style.backgroundColor = 'white';
-                                    heartbutton.style.border = 'white';
-                                    heartbutton.style.fontWeight = 'normal'
-                                    heartCount--;
-                                    heartCounter.textContent = heartCount
-                                }
-                            }));
-                            
-                            // Fire button
-                            fireBtn.forEach(firebutton => firebutton.addEventListener('click', (e) => {
-                                if(firebutton.style.backgroundColor === 'white') {
-                                    firebutton.style.backgroundColor = 'rgb(250,182,51)';
-                                    firebutton.style.border = 'black';
-                                    firebutton.style.fontWeight = 'bolder';
-                                    fireCount++;
-                                    fireCounter.textContent = fireCount;
-                                    addEmoji();
-                                } else {
-                                    firebutton.style.backgroundColor = 'white';
-                                    firebutton.style.border = 'white';
-                                    firebutton.style.fontWeight = 'normal'
-                                    fireCount--;
-                                    fireCounter.textContent = fireCount
-                                }
-                            }));
-                        }
-                        
+            // Like button
+            likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
+                if(likebutton.style.backgroundColor === 'white') {
+                    likebutton.style.backgroundColor = 'rgb(41,114,250)';
+                    likebutton.style.border = 'black';
+                    likebutton.style.fontWeight = 'bolder';
+                    likeCount ++;
+                    likeCounter.textContent = likeCount;
+                    addEmoji();
+                } else {
+                    likebutton.style.backgroundColor = 'white';
+                    likebutton.style.border = 'white';
+                    likebutton.style.fontWeight = 'normal';
+                    likeCount --;
+                    likeCounter.textContent = likeCount
+                }
+            }));
+            
+            // Heart button
+            heartBtn.forEach(heartbutton => heartbutton.addEventListener('click', (e) => {
+                if(heartbutton.style.backgroundColor === 'white') {
+                    heartbutton.style.backgroundColor = 'rgb(211,105,116)';
+                    heartbutton.style.border = 'black';
+                    heartbutton.style.fontWeight = 'bolder';
+                    heartCount++;
+                    heartCounter.textContent = heartCount; 
+                    addEmoji();                           
+                } else {
+                    heartbutton.style.backgroundColor = 'white';
+                    heartbutton.style.border = 'white';
+                    heartbutton.style.fontWeight = 'normal'
+                    heartCount--;
+                    heartCounter.textContent = heartCount
+                }
+            }));
+            
+            // Fire button
+            fireBtn.forEach(firebutton => firebutton.addEventListener('click', (e) => {
+                if(firebutton.style.backgroundColor === 'white') {
+                    firebutton.style.backgroundColor = 'rgb(250,182,51)';
+                    firebutton.style.border = 'black';
+                    firebutton.style.fontWeight = 'bolder';
+                    fireCount++;
+                    fireCounter.textContent = fireCount;
+                    addEmoji();
+                } else {
+                    firebutton.style.backgroundColor = 'white';
+                    firebutton.style.border = 'white';
+                    firebutton.style.fontWeight = 'normal'
+                    fireCount--;
+                    fireCounter.textContent = fireCount
+                }
+            }));
+        }      
     });
                             
 };

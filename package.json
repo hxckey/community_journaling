@@ -4,7 +4,11 @@
   "description": "LAP 1 Community Journaling Project",
   "main": "index.js",
   "scripts": {
+<<<<<<< HEAD
     "test": "jest --watchAll --coverage",
+=======
+    "test": "jest --coverage --watchAll",
+>>>>>>> 32308b227c36018b6a5f0f246af1788e66ddad82
     "coverage": "jest coverage",
     "start": "node server/server.js"
   },

@@ -1,4 +1,8 @@
 node_modules
 .env
 .DS_Store
+<<<<<<< HEAD
 coverage
+=======
+coverage
+>>>>>>> 32308b227c36018b6a5f0f246af1788e66ddad82

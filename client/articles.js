@@ -208,7 +208,7 @@ const getArticles = () => {
         articles.push(data)
         //display articles into boxes 
         for (item in data.results){
-            
+            console.log(data.results[item]);
             let likeCount = data.results[item].emojis.like;
             let heartCount = data.results[item].emojis.heart;
             let fireCount = data.results[item].emojis.fire;        
@@ -366,7 +366,7 @@ const postArticle = async (newEntry) => {
     try {
         await fetch('http://localhost:5000/entry', {
             method: "POST",
-            body: JSON.stringify({entry: articleInput.value, title: titleInput.value}),
+            body: JSON.stringify({entry: articleInput.value, title: titleInput.value, emojis: {like: 0, heart: 0, fire: 0}}),
             headers: {"Content-type": "application/json; charset=UTF-8"}
         })
         console.log(articleInput.value)

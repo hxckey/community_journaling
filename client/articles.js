@@ -65,20 +65,6 @@ window.onclick = function(event) {
 }
 
 
-
-const addEmoji = async (likeCount, heartCount, fireCount) => {
-    try {
-        await fetch('http://localhost:5000/emojis/update/:id', {
-            method: "PUT",
-            body: JSON.stringify({like: likeCount, heart: heartCount, fire: fireCount}),
-            headers: {"Content-type": "application/json; charset=UTF-8"}
-        })
-    } catch(err) {
-        console.log("Error: " + err)
-    }
-}
-
-const showModal = (item, title, entry) => {
 const getGiphy = async(query) => {
     let gifs = [];
     try {
@@ -135,14 +121,14 @@ const commentDisplay = (item, comments) => {
             }
         })   
     });
-
+    
     let clearGifs = document.getElementById('clearGifs');
     clearGifs.addEventListener('click', e => {
         while(gifResults.firstChild){
             gifResults.firstChild.remove();
         }
     })
-
+    
     let removeGif = document.getElementById('removeGif');
     removeGif.addEventListener('click', e => {
         chosenGifs = [];
@@ -181,7 +167,7 @@ const commentDisplay = (item, comments) => {
                 }
             });
     });
-        
+    
     submitComment.addEventListener('submit', e => {
         e.preventDefault();
         try {
@@ -208,6 +194,7 @@ const showModal = (item, data) => {
     
 }
 
+
 // Functionality for New Post button
 const postBtn = document.getElementById('newPostButton')
 const newPost = document.getElementById('newPost');
@@ -221,112 +208,123 @@ const getArticles = () => {
         articles.push(data)
         //display articles into boxes 
         for (item in data.results){
+            
+            let likeCount = data.results[item].emojis.like;
+            let heartCount = data.results[item].emojis.heart;
+            let fireCount = data.results[item].emojis.fire;        
+
             let displayArticle = document.createElement('div')
             let articleBody = document.getElementById('article-body')
             displayArticle.innerHTML= 
-                `<div class="card" id="box1">
-                    <header>${data.results[item].title}</header>
-                    <p>${data.results[item].entry}</p>
+            `<div class="card" id="box1">
+            <header>${data.results[item].title}</header>
+            <p>${data.results[item].entry}</p>
                     <a class = "commentBtn" id="viewPost${item}">See more</a>
                     <footer>
                         <p></p>
                         <p></p>
                         <p></p>            
                         <div id="formBtnContainer" class="btn-group u-pull-right">
-                            <button class="btn likeEmoji" style="background-color: white;">Likes: <span id='likeCounter${item}'></span><img src="./assets/like.png"></button>
-                            <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}'><img src="./assets/heart.png"></button>
-                            <button class="btn fireEmoji" style="background-color: white;">Fire: <span id="fireCounter${item}"></span><img src="./assets/fire.png"></button>
+                        <button class="btn likeEmoji" style="background-color: white;">Likes: <span id='likeCounter${item}' data-value="${item}">${likeCount}</span><img src="./assets/like.png"></button>
+                        <button class="btn heartEmoji" style="background-color: white;">Loves: <span id='heartCounter${item}' data-value="${item}">${heartCount}<img src="./assets/heart.png"></button>
+                        <button class="btn fireEmoji" style="background-color: white;">Fire: <span id="fireCounter${item}" data-value="${item}">${fireCount}</span><img src="./assets/fire.png"></button>
                         </div>
-                    </footer>
-                </div>`
-            
-            articleBody.append(displayArticle);
+                        </footer>
+                        </div>`
+                        
+                        articleBody.append(displayArticle);
 
-            showModal(item, data.results[item]);
-            
-            // Functions
+                        showModal(item, data.results[item]);
+                        
             //// Emoji counter
+                
             //Selectors
             const likeBtn = displayArticle.querySelectorAll('.likeEmoji');
             const heartBtn = displayArticle.querySelectorAll('.heartEmoji');
-            const fireBtn = displayArticle.querySelectorAll('.fireEmoji');
-                            
-            // Sets the counters intialy to zero and adds them to the html
-            let likeCount = 0;
-            let heartCount = 0;
-            let fireCount = 0;
-                            
+            const fireBtn = displayArticle.querySelectorAll('.fireEmoji');                                       
+                      
+
             let likeCounter = document.getElementById(`likeCounter${item}`);
             let heartCounter = document.getElementById(`heartCounter${item}`);
             let fireCounter = document.getElementById(`fireCounter${item}`);
-                                                    
-            likeCounter.textContent = likeCount;
-            heartCounter.textContent = heartCount;
-            fireCounter.textContent = fireCount;
-          
-                            // Like button
-                            likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
-                                if(likebutton.style.backgroundColor === 'white') {
-                                    likebutton.style.backgroundColor = 'rgb(41,114,250)';
-                                    likebutton.style.border = 'black';
-                                    likebutton.style.fontWeight = 'bolder';
-                                    likeCount ++;
-                                    likeCounter.textContent = likeCount;
-                                    addEmoji();
-                                } else {
-                                    likebutton.style.backgroundColor = 'white';
-                                    likebutton.style.border = 'white';
-                                    likebutton.style.fontWeight = 'normal';
-                                    likeCount --;
-                                    likeCounter.textContent = likeCount
-                                }
-                            }));
-                            
-                            // Heart button
-                            heartBtn.forEach(heartbutton => heartbutton.addEventListener('click', (e) => {
-                                if(heartbutton.style.backgroundColor === 'white') {
-                                    heartbutton.style.backgroundColor = 'rgb(211,105,116)';
-                                    heartbutton.style.border = 'black';
-                                    heartbutton.style.fontWeight = 'bolder';
-                                    heartCount++;
-                                    heartCounter.textContent = heartCount; 
-                                    addEmoji();                           
-                                } else {
-                                    heartbutton.style.backgroundColor = 'white';
-                                    heartbutton.style.border = 'white';
-                                    heartbutton.style.fontWeight = 'normal'
-                                    heartCount--;
-                                    heartCounter.textContent = heartCount
-                                }
-                            }));
-                            
-                            // Fire button
-                            fireBtn.forEach(firebutton => firebutton.addEventListener('click', (e) => {
-                                if(firebutton.style.backgroundColor === 'white') {
-                                    firebutton.style.backgroundColor = 'rgb(250,182,51)';
-                                    firebutton.style.border = 'black';
-                                    firebutton.style.fontWeight = 'bolder';
-                                    fireCount++;
-                                    fireCounter.textContent = fireCount;
-                                    addEmoji();
-                                } else {
-                                    firebutton.style.backgroundColor = 'white';
-                                    firebutton.style.border = 'white';
-                                    firebutton.style.fontWeight = 'normal'
-                                    fireCount--;
-                                    fireCounter.textContent = fireCount
-                                }
-                            }));
-                        }
+
+            // Like button
+            likeBtn.forEach(likebutton => likebutton.addEventListener('click', (e) => {
+                if(likebutton.style.backgroundColor === 'white') {
+                    likebutton.style.backgroundColor = 'rgb(41,114,250)';
+                    likebutton.style.border = 'black';
+                    likebutton.style.fontWeight = 'bolder';
+                    likeCount ++;
+                    console.log(likeCount)
+                    likeCounter.textContent = likeCount;
+                    addEmoji(likeCounter.getAttribute("data-value"));
+                } else {
+                    likebutton.style.backgroundColor = 'white';
+                    likebutton.style.border = 'white';
+                    likebutton.style.fontWeight = 'normal';
+                    likeCount --;
+                    likeCounter.textContent = likeCount
+                }
+            }));
+            
+            // Heart button
+            heartBtn.forEach(heartbutton => heartbutton.addEventListener('click', (e) => {
+                if(heartbutton.style.backgroundColor === 'white') {
+                    heartbutton.style.backgroundColor = 'rgb(211,105,116)';
+                    heartbutton.style.border = 'black';
+                    heartbutton.style.fontWeight = 'bolder';
+                    heartCount++;
+                    heartCounter.textContent = heartCount; 
+                    addEmoji(heartCounter.getAttribute("data-value"));                           
+                } else {
+                    heartbutton.style.backgroundColor = 'white';
+                    heartbutton.style.border = 'white';
+                    heartbutton.style.fontWeight = 'normal'
+                    heartCount--;
+                    heartCounter.textContent = heartCount
+                }
+            }));
+            
+            // Fire button
+            fireBtn.forEach(firebutton => firebutton.addEventListener('click', (e) => {
+                if(firebutton.style.backgroundColor === 'white') {
+                    firebutton.style.backgroundColor = 'rgb(250,182,51)';
+                    firebutton.style.border = 'black';
+                    firebutton.style.fontWeight = 'bolder';
+                    fireCount++;
+                    fireCounter.textContent = fireCount;
+                    addEmoji(fireCounter.getAttribute("data-value"));
+                } else {
+                    firebutton.style.backgroundColor = 'white';
+                    firebutton.style.border = 'white';
+                    firebutton.style.fontWeight = 'normal'
+                    fireCount--;
+                    fireCounter.textContent = fireCount
+                }
+                                
+            }));
+
+            const addEmoji = async (index) => {
+                try {
+                    await fetch(`http://localhost:5000/emojis/update/${index}`, {
+                        method: "PUT",
+                        body: JSON.stringify({like: likeCount, heart: heartCount, fire: fireCount}),
+                        headers: {"Content-type": "application/json; charset=UTF-8"}
+                    })
+                } catch(err) {
+                    console.log("Error: " + err)
+                }
+            }
+        }
                         
     });
                             
 };
+
                         
+
                         
-                        
-                        
-                        
+
 // change listener to be a display artidcles
 let inputBox = document.getElementById('postInputBox');
 let submitBtn = document.getElementById('postBtn');

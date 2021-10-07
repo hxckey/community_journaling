@@ -4,235 +4,68 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StreetHub</title>    
+    <title>StreetHub - Articles</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cirrus-ui@0.6.0/dist/cirrus.min.css">
-    <link rel="icon" href="assets/logo/logo_small_icon_only_inverted.png">
+    <link rel="icon" href="assets/updated logo/logo_small_icon_only_inverted.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./style.css" type="text/css">
     <link rel="stylesheet" href="article.css">
-    <script defer src="script.js"></script>
     <script defer src="articles.js"></script>
 </head>
 
 <body class="bg-purple-200 mt-16">
     <header>
-        <nav>
-            <img id="navLogo" src="./assets/logo/logo_small.png">
-            <button id="getStartedButton">Get Started</button>
+        <nav>        
+           <a href="index.html"><img id="navLogo" src="./assets/updated logo/logo_small.png"></a>
+            <button id="newPostButton" href='#newPost'>New post</button>
+            <div class = "postModal" id="newPost">
+                <div class = "modalContent">
+                    <header class="modalHeader">
+                        <span id = "closePostBtn">&times;</span>
+                        <h4>Write your post below</h4>
+                    </header>      
+                    <body class="modalBody">                            
+                        <form method="POST"  id='postFooter'>
+                            <textarea name="titleInput" id="titleInput" rows="2" required maxlength="100" placeholder="Enter the title of your article here"></textarea>
+                            <textarea name="postInputBox" id="postInputBox" rows="15" autofocus required maxlength="2000" placeholder="Write your post here, 2000 character limit"></textarea>
+                            <!-- <button disabled id='gifBtn' class='ourBtn'>Add a Gif</button> -->
+                            <input id='postBtn' type="submit" value="submit" formmethod="POST">
+                        </form>                        
+                    </body>           
+                </div>
         </nav>
     </header> 
 
     <h2 id="title">Articles</h2>
-
+    
     <main id = "article-body">     
-
-        <div class="card" id="box1">
-            <header>Article Title 1</header>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item1">Read all</button>
-            <footer>
-                <button class="commentBtn btn" href='#comment1'>Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
-            </footer>
-
-            <div class = "ourModal" id="item1">
-                <div class = "modalContent">
-                    <header class="modalHeader">
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Article Title 1</h2>
-                    </header>      
-                    <body class="modalBody">
-                        <p>Hello...I am a modal</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis facere libero laudantium, quas, mollitia delectus veritatis exercitationem unde ea ipsum nostrum excepturi quisquam sequi totam. Dolore dicta eos repellendus porro.</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Modal Footer</h3>
-                    </footer>           
-                </div>
-            </div>
-            <div class="ourModal" id='comment1'>
-                <div class="modalContent">
-                    <header class='modalHeader'>
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Comments for [Article 1 Title]</h2>
-                    </header>
-                    <body class="modalBody">
-                        <p>Comments section</p>
-                        <p>Wow so cool</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Please read our Code of Conduct before posting</h3>
-                    </footer> 
-                </div>
+        <div class="ourModal" id='viewModal'>
+            <div class="modalContent">
+                <header class='modalHeader'>
+                    <span class = "closeBtn">&times;</span>
+                </header>
+                <section class="modalBody">
+                    <h2 id="modalTitle"></h2>
+                    <p id="articleContent"></p>
+                    <p>Comments section</p>
+                    <form id="commentsForm">
+                        <textarea name="comments"></textarea>
+                        <input id="gifSearchQuery" type="text" placeholder="Search for a GIF"/>
+                        <button id="searchGif" class="bg-indigo-500 text-light">Search</button>
+                        <button id="clearGifs" class="bg-primary text-light" type="button">Clear</button>
+                        <button id="removeGif" class="bg-primary text-light" type="button">Remove GIFs</button>
+                        <input type="submit" class="btn-link u-pull-right w-20"/>
+                        <section id="gifResults"></section>
+                    </form>
+                </section>   
+                <footer class="modalFooter">
+                    <h3>Please read our Code of Conduct before posting</h3>
+                </footer> 
             </div>
         </div>
-
-        <div class="card" id="box2">
-            <header>Article Title 2</header>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item2">Read all</button>
-            <footer>
-                <button class="commentBtn btn" href='#comment2'>Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
-            </footer>
-
-            <div class = "ourModal" id="item2">
-                <div class = "modalContent">
-                    <header class="modalHeader">
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Article Title 2</h2>
-                    </header>      
-                    <body class="modalBody">
-                        <p>Hello...I am a modal</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis facere libero laudantium, quas, mollitia delectus veritatis exercitationem unde ea ipsum nostrum excepturi quisquam sequi totam. Dolore dicta eos repellendus porro.</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Modal Footer</h3>
-                    </footer>           
-                </div>
-            </div>
-            <div class="ourModal" id='comment2'>
-                <div class="modalContent">
-                    <header class='modalHeader'>
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Comments for [Article 2 Title]</h2>
-                    </header>
-                    <body class="modalBody">
-                        <p>Comments section</p>
-                        <p>Wow so cool</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Please read our Code of Conduct before posting</h3>
-                    </footer> 
-                </div>
-            </div>
-        </div>
-
-        <div class="card" id="box3">
-            <header>Article Title 3</header>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item3">Read all</button>
-            <footer>
-                <button class="commentBtn btn" href="#comment3">Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
-            </footer>
-
-            <div class = "ourModal" id="item3">
-                <div class = "modalContent">
-                    <header class="modalHeader">
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Article Title 3</h2>
-                    </header>      
-                    <body class="modalBody">
-                        <p>Hello...I am a modal</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis facere libero laudantium, quas, mollitia delectus veritatis exercitationem unde ea ipsum nostrum excepturi quisquam sequi totam. Dolore dicta eos repellendus porro.</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Modal Footer</h3>
-                    </footer>           
-                </div>
-            </div>
-
-            <div class="ourModal" id='comment3'>
-                <div class="modalContent">
-                    <header class='modalHeader'>
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Comments for [Article 3 Title]</h2>
-                    </header>
-                    <body class="modalBody">
-                        <p>Comments section</p>
-                        <p>Wow so cool</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Please read our Code of Conduct before posting</h3>
-                    </footer> 
-                </div>
-            </div>
-        </div>
-
-        <div class="card" id="box4">
-            <header>Article Title 4</header>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item4">Read all</button>
-            <footer>
-                <button class="commentBtn btn" href='#comment4'>Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
-            </footer>
-
-            <div class = "ourModal" id="item4">
-                <div class = "modalContent">
-                    <header class="modalHeader">
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Article Title 4</h2>
-                    </header>      
-                    <body class="modalBody">
-                        <p>Hello...I am a modal</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis facere libero laudantium, quas, mollitia delectus veritatis exercitationem unde ea ipsum nostrum excepturi quisquam sequi totam. Dolore dicta eos repellendus porro.</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Modal Footer</h3>
-                    </footer>           
-                </div>
-            </div>
-
-            <div class="ourModal" id='comment4'>
-                <div class="modalContent">
-                    <header class='modalHeader'>
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Comments for [Article 4 Title]</h2>
-                    </header>
-                    <body class="modalBody">
-                        <p>Comments section</p>
-                        <p>Wow so cool</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Please read our Code of Conduct before posting</h3>
-                    </footer> 
-                </div>
-            </div>
-        </div>
-
-        <div class="card" id="box5">
-            <header>Article Title 5</header>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quas quae molestias exercitationem magni? Reiciendis ad veritatis nobis iste porro tempore voluptatem veniam eius ullam harum consectetur earum ab repellat laborum ea libero consequuntur omnis dolorum, sapiente deleniti similique qui sequi nesciunt. Aliquam alias consequatur excepturi, expedita ab nostrum autem aut inventore distinctio quo et obcaecati reprehenderit delectus nesciunt quam iusto numquam aspernatur sint quas! Dolorum deserunt maiores quas qui distinctio pariatur, doloremque blanditiis veniam sint in quisquam beatae aliquid officia, veritatis, consectetur eligendi. Iure, expedita voluptas suscipit necessitatibus repellat quos esse odio obcaecati qui accusamus, minima placeat perferendis accusantium adipisci![ARTICLE SUMMARY GOES HERE] Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, sunt dolorum! Dolor laborum vel nostrum...</p>
-                <button class = "readBtn btn" href="#item5">Read all</button>
-            <footer>
-                <button class="commentBtn btn" href='#comment5'>Comments</button>
-                <p>[EMOJIS WILL GO HERE]</p>
-            </footer>
-
-            <div class = "ourModal" id="item5">
-                <div class = "modalContent">
-                    <header class="modalHeader">
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Article Title 5</h2>
-                    </header>      
-                    <body class="modalBody">
-                        <p>Hello...I am a modal</p>
-                        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Facilis facere libero laudantium, quas, mollitia delectus veritatis exercitationem unde ea ipsum nostrum excepturi quisquam sequi totam. Dolore dicta eos repellendus porro.</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Modal Footer</h3>
-                    </footer>           
-                </div>
-            </div>
-
-            <div class="ourModal" id='comment5'>
-                <div class="modalContent">
-                    <header class='modalHeader'>
-                        <span class = "closeBtn">&times;</span>
-                        <h2>Comments for [Article 5 Title]</h2>
-                    </header>
-                    <body class="modalBody">
-                        <p>Comments section</p>
-                        <p>Wow so cool</p>
-                    </body>   
-                    <footer class="modalFooter">
-                        <h3>Please read our Code of Conduct before posting</h3>
-                    </footer> 
-                </div>
-            </div>
-        </div>  
-
+    
     </main> 
 
     <footer class="footer bg-gray-000 font-alt text-purple-300" id="CoCFooter">
@@ -244,20 +77,19 @@
                    
                     <div class="col-4">
                         <ul class="no-bullets">
-                            <a href="index.html">
+                            <a href="index.html" class="ourFooterBtn" id="homepageButton">
                                 <li class="footer__list-item">About</li>
                             </a>
-                            <a href="conduct.html">
+                            <a href="conduct.html" class="ourFooterBtn">
                                 <li class="footer__list-item">Code of Conduct</li>
                             </a>
-                            <a href="articles.html">
+                            <a href="articles.html" class="ourFooterBtn">
                                 <li class="footer__list-item">Articles</li>
                             </a>
                             <ul>
                             </ul>
                         </ul>
                     </div>
-                   
                 </div>
             </div>
     </footer>

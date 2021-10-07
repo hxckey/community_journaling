@@ -51,12 +51,13 @@ app.get("/articles/:id", (req, res) => {
     res.send(articles[req.params.id-1]);
 }});
 
+//Get a gif
 app.get("/gifs/:query", async (req, res) => {
     try {
         const searchGif = req.params.query;
         const apiKey = process.env.API_KEY;
 
-        const response = await axios.get(`https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${searchGif}&limit=10&offset=0&rating=g&lang=en`);
+        const response = await axios.get(`https://api.giphy.com/v1/gifs/search?api_key=n4DfHRcGUm9S4orgEU3le42IOAIKmqqA&q=${searchGif}&limit=10&offset=0&rating=g&lang=en`);
 	
 		return res.json({
             success: true,
@@ -115,11 +116,10 @@ app.delete("/articles/delete/:id" , (req, res) => {
         } else { 
 
         delete articles[req.params.id-1];
-        res.status(204).json({
+        res.status(200).json({
             message: "Article deleted",
             success: true
         })}
-        // console.log(articles)
     } catch(err) {
         res.status(500).json({
             message: "Error: article could not be deleted."
@@ -127,19 +127,21 @@ app.delete("/articles/delete/:id" , (req, res) => {
     }
 });
 
+//Updates article
 app.put("/articles/update/:id" , (req, res) => {
     try {
         if(req.params.id > articles.length || req.params.id < 0){
             res.send('Please enter a number greater than 0.');
-        } else {
+            res.status(404);      
+        } else {            
             articles[req.params.id-1].entry = req.body.entry;
             articles[req.params.id-1].title = req.body.title;
-            res.status(200).json({
+            res.status(201).json({
                 message: "Your post has been updated"
-            })
+            }) 
         }
     } catch(err) {
-        res.send(500).json({
+        res.status(500).json({
             message: "Your post could not be updated"
         })
     }
@@ -147,39 +149,19 @@ app.put("/articles/update/:id" , (req, res) => {
 
 //Update the emoji counters 
 app.put("/emojis/update/:id", (req,res) => {
-    // try {
+    try {
         articles[req.params.id].emojis.like = req.body.like;
         articles[req.params.id].emojis.heart = req.body.heart;
         articles[req.params.id].emojis.fire = req.body.fire;        
         res.status(200).json({
             message: "Post emoji-ed"
         })
-//     } catch(err) {
-//         res.status(500).json({
-//                 message: "Error: post could not be emoji-ed"
-//         })
-//         console.log(err);
-//     }
-});
-
-
-//GET request for the emoji count
-app.get("/emojis/:id", (req,res) => {
-    try {
-        res.json({
-            likes: articles[req.params.id].emojis.like,
-            hearts: articles[req.params.id].emojis.heart,
-            fire: articles[req.params.id].emojis.fire
-        });        
-        res.status(200).json({
-            message: "Emoji count got"
-        })
     } catch(err) {
         res.status(500).json({
-            message: "Error: emoji count could not be got"
+                message: "Error: post could not be emoji-ed"
         })
-        console.log(err)
+        console.log(err);
     }
-})
+});
 
 module.exports = app;

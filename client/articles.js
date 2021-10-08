@@ -65,7 +65,7 @@ window.onclick = function(event) {
 const getGiphy = async(query) => {
     let gifs = [];
     try {
-        let response =  await fetch(`http://localhost:5000/gifs/${query}`)
+        let response =  await fetch(`https://streethub.herokuapp.com/gifs/${query}`)
         let jsonResponse = await response.json();
         
         for(result in jsonResponse.output.data){
@@ -86,7 +86,7 @@ const postComments = async (newComment, newGifs, item) => {
     let curDate = today.getFullYear()+'/'+(today.getMonth()+1)+'/'+today.getDate();
     let curTime = today.getHours() + ":" + today.getMinutes();
     try {
-        await fetch(`http://localhost:5000/newcomment/${item}`, {
+        await fetch(`https://streethub.herokuapp.com/newcomment/${item}`, {
         method: "POST",
         body: JSON.stringify({comment: `${curDate} - ${curTime}: ${newComment}`, gifs: newGifs}),
         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -174,7 +174,7 @@ const newPost = document.getElementById('newPost');
 const closePost = document.getElementById('closepostBtn')
 const getArticles = () => {
     let articles = [];
-    fetch('http://localhost:5000/articles')
+    fetch('https://streethub.herokuapp.com/articles')
     .then(response => response.json())
     .then(data => {
         articles.push(data)
@@ -324,7 +324,7 @@ const getArticles = () => {
 
             const addEmoji = async (index) => {
                 try {
-                    await fetch(`http://localhost:5000/emojis/update/${index}`, {
+                    await fetch(`https://streethub.herokuapp.com/emojis/update/${index}`, {
                         method: "PUT",
                         body: JSON.stringify({like: likeCount, heart: heartCount, fire: fireCount}),
                         headers: {"Content-type": "application/json; charset=UTF-8"}
@@ -376,7 +376,7 @@ let newEntry = articleInput.value
 const postArticle = async (newEntry) => {
     // e.preventDefault();
     try {
-        await fetch('http://localhost:5000/entry', {
+        await fetch('https://streethub.herokuapp.com/entry', {
             method: "POST",
             body: JSON.stringify({entry: articleInput.value, title: titleInput.value, postComments: [{comment: "Hello welcome to the comments section! Please read the Code of Conduct before posting."}], emojis: {like: 0, heart: 0, fire: 0}}),
             headers: {"Content-type": "application/json; charset=UTF-8"}

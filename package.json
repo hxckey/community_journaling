@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "LAP 1 Community Journaling Project",
   "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
   "scripts": {
     "test": "jest --coverage --watchAll --env=jsdom",
     "coverage": "jest coverage",

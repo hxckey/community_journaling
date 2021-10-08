@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'StreetHub'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DA429F365DF84165B0BF0B2A2A261CB5 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_69E31430F20F445093B056F4C558CEDA }}
           package: .
